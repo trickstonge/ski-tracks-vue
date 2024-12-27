@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function tracks()
+    {
+        return $this->hasMany(Track::class);
+    }
 }

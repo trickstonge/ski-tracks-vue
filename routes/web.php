@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/',
+    [TrackController::class, 'index'])
+    ->name('track.index');
+
+Route::resource('track', TrackController::class)->except(['index', 'edit', 'update']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
