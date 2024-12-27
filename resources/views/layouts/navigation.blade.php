@@ -2,6 +2,7 @@
     //todo I wonder if there's a better place to put this, like in a controller
     $nav = [
         'Tracks' => 'track.index',
+        'Upload Tracks' => 'track.create',
     ]
 @endphp
 
