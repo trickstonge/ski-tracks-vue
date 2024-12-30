@@ -12,6 +12,7 @@ class Track extends Model
 
     protected $fillable = [
         'user_id',
+        'season',
         'name',
         'rating',
         'start',

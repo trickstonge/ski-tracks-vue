@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',
     [TrackController::class, 'index'])
-->middleware(['auth', 'verified'])->name('track.index');
+->name('track.index');
 
-Route::resource('track', TrackController::class)->except(['index', 'edit', 'update']);
+Route::resource('track', TrackController::class)->middleware(['auth', 'verified'])->except(['index', 'edit', 'update']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

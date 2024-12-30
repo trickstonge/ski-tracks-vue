@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->string('season');
             $table->string('name');
             $table->integer('rating')->nullable();
             $table->dateTime('start');

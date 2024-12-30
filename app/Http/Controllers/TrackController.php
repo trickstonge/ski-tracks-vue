@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTrackRequest;
-use App\Http\Requests\UpdateTrackRequest;
 use App\Models\Track;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +13,16 @@ class TrackController extends Controller
      */
     public function index()
     {
+        //the line below defines a DocBlock. It fixes a false error from intelephense that tracks is undefined
+        /** @var \App\Models\Track $user */
+        $user = Auth::user();
+
         return view('track.index', [
-            'tracks' => Track::all(),
+            'tracks' => $user->tracks()
+                ->orderBy('season', 'desc')->orderBy('start', 'asc')
+                ->get()
+                //this groupBy is NOT done in SQL, it's done by laravel on the collection coming from the database
+                ->groupBy('season')
         ]);
     }
 
@@ -39,7 +46,13 @@ class TrackController extends Controller
         $files = $request->file('files');
         foreach ($files as $file)
         {
+            //todo should all this logic be in the model?
+            
             $jsonTrack = json_decode(file_get_contents($file), true);
+
+            //get season years from name
+            preg_match('/(\d{4})\/(\d{4})/', $jsonTrack['name'], $season);
+            $jsonTrack['season'] = $season[0];
 
             //adjust times to timezone
             $timezone = new \DateTimeZone($jsonTrack['tz']);
@@ -53,6 +66,7 @@ class TrackController extends Controller
             $jsonTrack['latitude'] = $jsonTrack['trackNodes'][0]['latitude'];
             $jsonTrack['longitude'] = $jsonTrack['trackNodes'][0]['longitude'];
             $jsonTrackMetrics = $jsonTrack['trackMetrics'];
+
             //change the keys of jsonTrackMetrics from camelCase to snake_case
             $dbMetrics = array();
             array_walk($jsonTrackMetrics, function($value, $key) use (&$dbMetrics)
@@ -62,8 +76,7 @@ class TrackController extends Controller
                 }
             );
 
-            //the line below defines a DocBlock. It fixes a false error from intelephense that tracks is undefined
-        /** @var \App\Models\Track $user */
+            /** @var \App\Models\Track $user */
             $user = Auth::user();
             $track = $user->tracks()->create($jsonTrack);
             $track->metrics()->create($dbMetrics);
@@ -77,22 +90,6 @@ class TrackController extends Controller
      * Display the specified resource.
      */
     public function show(Track $track)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Track $track)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTrackRequest $request, Track $track)
     {
         //
     }

@@ -8,12 +8,18 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
-                <div class="bg-white overflow-hidden shadow-sm rounded-lg sm:rounded-none">
-                    <div class="p-6 text-gray-900">
-                        <x-auth-session-status class="mb-4" :status="session('success')" />
-                        {{ __("You're logged in!") }}
-                    </div>
-                </div>
+                @forelse ($tracks as $season)
+                    <x-card>
+                        <h2 class="text-xl text-gray-800 font-semibold">{{ $season->first()->season }}</h2>
+                        @foreach ($season as $track)
+                            <p>{{ $track->name }} {{ $track->description }}</p>
+                        @endforeach
+                    </x-card>
+                @empty
+                    <x-card>
+                        <p>No tracks yet! <a href="{{ route('track.create') }}" class="underline">Upload some now</a>.</p>
+                    </x-card>
+                @endforelse
             </div>
         </div>
     </x-app-layout>
@@ -28,11 +34,9 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
-                <div class="bg-white overflow-hidden shadow-sm rounded-lg sm:rounded-none">
-                    <div class="p-6 text-gray-900">
-                        Not authenticated
-                    </div>
-                </div>
+                <x-card>
+                    Not authenticated
+                </x-card>
             </div>
         </div>
     </x-app-layout>
