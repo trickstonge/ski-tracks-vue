@@ -10,6 +10,19 @@ class Track extends Model
     /** @use HasFactory<\Database\Factories\TrackFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'name',
+        'rating',
+        'start',
+        'finish',
+        'description',
+        'activity',
+        'duration',
+        'latitude',
+        'longitude',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

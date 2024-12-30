@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTrackRequest;
 use App\Http\Requests\UpdateTrackRequest;
 use App\Models\Track;
+use Illuminate\Support\Facades\Auth;
 
 class TrackController extends Controller
 {
@@ -38,10 +39,34 @@ class TrackController extends Controller
         $files = $request->file('files');
         foreach ($files as $file)
         {
-            
+            $jsonTrack = json_decode(file_get_contents($file), true);
 
-            //store the file in the local disk. Defined in config/filesystems.php
-            $path = $file->store('tracks', 'local');
+            //adjust times to timezone
+            $timezone = new \DateTimeZone($jsonTrack['tz']);
+            $start = new \DateTime($jsonTrack['start']);
+            $start->setTimezone($timezone);
+            $finish = new \DateTime($jsonTrack['finish']);
+            $finish->setTimezone($timezone);
+            $jsonTrack['start'] = $start->format('Y-m-d H:i:s');
+            $jsonTrack['finish'] = $finish->format('Y-m-d H:i:s');
+            
+            $jsonTrack['latitude'] = $jsonTrack['trackNodes'][0]['latitude'];
+            $jsonTrack['longitude'] = $jsonTrack['trackNodes'][0]['longitude'];
+            $jsonTrackMetrics = $jsonTrack['trackMetrics'];
+            //change the keys of jsonTrackMetrics from camelCase to snake_case
+            $dbMetrics = array();
+            array_walk($jsonTrackMetrics, function($value, $key) use (&$dbMetrics)
+                {
+                    $key = strtolower(preg_replace('/([A-Z])/', '_$1', $key));
+                    $dbMetrics[$key] = $value;
+                }
+            );
+
+            //the line below defines a DocBlock. It fixes a false error from intelephense that tracks is undefined
+        /** @var \App\Models\Track $user */
+            $user = Auth::user();
+            $track = $user->tracks()->create($jsonTrack);
+            $track->metrics()->create($dbMetrics);
         }
 
         return redirect()->route('track.index')

@@ -32,8 +32,8 @@ return new class extends Migration
             $table->float('average_ascent_speed');
             $table->float('start_altitude');
             $table->float('finish_altitude');
-            $table->integer('ascents');
-            $table->integer('descents');
+            $table->integer('ascents')->nullable();
+            $table->integer('descents')->nullable();
 
             $table->timestamps();
         });
