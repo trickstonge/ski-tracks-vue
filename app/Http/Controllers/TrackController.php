@@ -31,7 +31,21 @@ class TrackController extends Controller
      */
     public function store(StoreTrackRequest $request)
     {
-        //
+        //todo add gate
+        
+        $validated = $request->validated();
+
+        $files = $request->file('files');
+        foreach ($files as $file)
+        {
+            
+
+            //store the file in the local disk. Defined in config/filesystems.php
+            $path = $file->store('tracks', 'local');
+        }
+
+        return redirect()->route('track.index')
+            ->with('success', 'Tracks uploaded successfully.');
     }
 
     /**

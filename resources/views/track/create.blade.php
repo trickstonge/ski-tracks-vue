@@ -15,7 +15,7 @@
 					
 						<div>
 							<x-input-label for="files" value="Files" />
-							<x-text-input id="files" class="block mt-1 w-full" type="file" name="files" :value="old('email')" autofocus multiple autocomplete="username" />
+							<x-text-input id="files" class="block mt-1 w-full" type="file" name="files[]" accept="application/json" autofocus multiple  />
 							<x-input-error :messages="$errors->get('files')" class="mt-2" />
 						</div>
 					
