@@ -13,14 +13,16 @@ class TrackController extends Controller
      */
     public function index()
     {
+        if (Auth::guest())
+        { return view('track.index'); }
         //the line below defines a DocBlock. It fixes a false error from intelephense that tracks is undefined
         /** @var \App\Models\Track $user */
         $user = Auth::user();
 
+        $filters = ['description' => 'Wildcat'];
+
         return view('track.index', [
-            'tracks' => $user->tracks()
-                ->orderBy('season', 'desc')->orderBy('start', 'asc')
-                ->get()
+            'tracks' => $user->tracks()->filterTracks($filters)->orderSeason()->get()
                 //this groupBy is NOT done in SQL, it's done by laravel on the collection coming from the database
                 ->groupBy('season')
         ]);
