@@ -7,7 +7,7 @@
 
 	<div class="py-12">
 		<div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
-			<x-card>
+			<x-card class="max-w-md m-auto">
 
 				<form method="POST" action="{{ route('track.store') }}" enctype="multipart/form-data">
 					@csrf

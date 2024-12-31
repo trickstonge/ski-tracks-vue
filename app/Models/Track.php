@@ -26,13 +26,29 @@ class Track extends Model
         'longitude',
     ];
 
+    protected $with = ['metrics'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function metrics()
     {
         return $this->hasOne(TrackMetric::class);
+    }
+    
+    //event to add icon when retrieved from DB
+    protected static function booted()
+    {
+        static::retrieved(function ($track) {
+            $track->icon = match($track->activity)
+            {
+                'skiing' => 'fas-person-skiing',
+                'ski-touring' => 'eos-forest',
+                'x-country' => 'fas-skiing-nordic'
+            };
+        });
     }
 
     public function scopeFilterTracks(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
