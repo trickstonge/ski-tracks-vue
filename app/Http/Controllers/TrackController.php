@@ -22,7 +22,7 @@ class TrackController extends Controller
         $filters = ['description' => 'Wildcat'];
 
         return view('track.index', [
-            'tracks' => $user->tracks()->filterTracks($filters)->orderSeason()->get()
+            'tracks' => $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get()
                 //this groupBy is NOT done in SQL, it's done by laravel on the collection coming from the database
                 ->groupBy('season')
         ]);
