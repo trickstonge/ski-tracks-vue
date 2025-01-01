@@ -33,6 +33,7 @@ class Track extends Model
     }
     
     //event to modify data when retrieved from DB
+    //todo should this logic be in the model? Resources seem specific to building an API, and I found something called transformers but those seem to only be in old versions of laravel.
     protected static function booted()
     {
         static::retrieved(function ($track) {
@@ -48,6 +49,8 @@ class Track extends Model
             { $track->duration = date('g:i', $track->duration); }
             else
             { $track->duration = date('i', $track->duration); }
+            //format start time
+            $track->start = date('m/d/y g:i', strtotime($track->start));
 
         });
     }
@@ -56,6 +59,8 @@ class Track extends Model
     {
         return $query->when($filters['description'] ?? null, function ($query, $search) {
             $query->where('description', 'like', '%' . $search . '%');
+        })->when($filters['activity'] ?? null, function ($query, $activity) {
+            $query->where('activity', $activity);
         });
     }
     

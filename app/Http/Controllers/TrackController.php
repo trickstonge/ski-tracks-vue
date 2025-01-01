@@ -19,7 +19,7 @@ class TrackController extends Controller
         /** @var \App\Models\Track $user */
         $user = Auth::user();
 
-        $filters = ['description' => 'Wildcat'];
+        $filters = [];
 
         return view('track.index', [
             'tracks' => $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get()
@@ -77,6 +77,34 @@ class TrackController extends Controller
                     $dbMetrics[$key] = $value;
                 }
             );
+
+            //round all values to 1 decimal place
+            foreach ($dbMetrics as $key => &$value)
+            {
+                //convert speeds from m/s to km/h
+                if (strpos($key, 'speed') !== false)
+                { $value = $value * 3.6; }
+                $value = round($value, 1);
+            }
+
+            //for ski touring, overwrite ascents and descents
+            if ($jsonTrack['activity'] === 'ski-touring' && !is_null($jsonTrack['trackSegments'][0]['metrics']['maxAltitude']))
+            {
+                $dbMetrics['ascents'] = $dbMetrics['descents'] = 0;
+                $maxAltitude = $jsonTrack['trackMetrics']['maxAltitude'];
+
+                foreach ($jsonTrack['trackSegments'] as $segment)
+                {
+                    //calculate difference in altitude
+                    $differenceMax = abs($segment['metrics']['maxAltitude'] - $maxAltitude);
+
+                    //only count entries with more or less than 50 meters of vertical, and only if they're close to the max altitude
+                    if ($segment['metrics']['vertical'] > 50 && $differenceMax < 40)
+                    { $dbMetrics['ascents']++; }
+                    elseif ($segment['metrics']['vertical'] < -50 && $differenceMax < 40)
+                    { $dbMetrics['descents']++; }
+                }
+            }
 
             /** @var \App\Models\Track $user */
             $user = Auth::user();
