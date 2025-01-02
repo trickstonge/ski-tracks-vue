@@ -20,11 +20,11 @@ class TrackController extends Controller
         $user = Auth::user();
 
         $filters = [];
+        $tracks = $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get();
+        $tracks = Track::organizeSeasonTotals($tracks);
 
         return view('track.index', [
-            'tracks' => $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get()
-                //this groupBy is NOT done in SQL, it's done by laravel on the collection coming from the database
-                ->groupBy('season')
+            'tracks' => $tracks
         ]);
     }
 
@@ -84,6 +84,9 @@ class TrackController extends Controller
                 //convert speeds from m/s to km/h
                 if (strpos($key, 'speed') !== false)
                 { $value = $value * 3.6; }
+                //convert distances from meters to kilometers
+                elseif (strpos($key, 'distance') !== false)
+                { $value = $value / 1000; }
                 $value = round($value, 1);
             }
 

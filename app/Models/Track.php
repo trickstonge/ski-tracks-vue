@@ -37,22 +37,25 @@ class Track extends Model
     protected static function booted()
     {
         static::retrieved(function ($track) {
-            //add icon based on activity
-            $track->icon = match($track->activity)
-            {
-                'skiing' => 'fas-person-skiing',
-                'ski-touring' => 'ski-touring-icon',
-                'x-country' => 'fas-skiing-nordic'
-            };
             //convert duration to hours and minutes
             if ($track->duration > 3600)
             { $track->duration = date('g:i', $track->duration); }
             else
             { $track->duration = date('i', $track->duration); }
             //format start time
-            $track->start = date('m/d/y g:i', strtotime($track->start));
+            $track->start = date('m/d/y g:i A', strtotime($track->start));
 
         });
+    }
+
+    public static function getIcon($activity)
+    {
+        return match($activity)
+        {
+            'skiing' => 'fas-person-skiing',
+            'ski-touring' => 'ski-touring-icon',
+            'x-country' => 'fas-skiing-nordic'
+        };
     }
 
     public function scopeFilterTracks(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
@@ -67,5 +70,36 @@ class Track extends Model
     public function scopeOrderSeason(Builder|QueryBuilder $query): Builder|QueryBuilder
     {
         return $query->orderBy('season', 'desc')->orderBy('start', 'asc');
+    }
+
+    public static function organizeSeasonTotals($tracks)
+    {
+        //working on the collection (this group by is not SQL but laravel), count the number of tracks per activity in each season
+        return $tracks->groupBy('season')->transform(function ($season) {
+            $season->totals = [];
+            $season->totals['activities'] = $season->countBy('activity');
+            //make sure all 3 keys exist
+            $season->totals['activities'] = array_merge(['skiing' => 0, 'ski-touring' => 0, 'x-country' => 0], $season->totals['activities']->toArray());
+            $season->totals['activities']['total'] = $season->count();
+
+            //get number of days in season by reading name from last track
+            preg_match('/Day (\d{1,3})/', $season->last()->name, $matches);
+            $season->totals['activities']['days'] = $matches[1];
+
+            $season->totals['runs'] = $season->filter(function ($track) {
+                return $track->activity != 'x-country';
+            })->sum('metrics.descents');
+
+            $season->totals['descent'] = $season->sum('metrics.total_descent');
+
+            $season->totals['distance'] = $season->filter(function ($track) {
+                return $track->activity == 'x-country';
+            })->sum('metrics.distance');
+            $season->totals['distance'] += $season->filter(function ($track) {
+                return $track->activity != 'x-country';
+            })->sum('metrics.descent_distance');
+
+            return $season;
+        });
     }
 }
