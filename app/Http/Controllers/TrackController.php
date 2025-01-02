@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTrackRequest;
 use App\Models\Track;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TrackController extends Controller
 {
@@ -13,6 +14,8 @@ class TrackController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Track::class);
+
         if (Auth::guest())
         { return view('track.index'); }
         //the line below defines a DocBlock. It fixes a false error from intelephense that tracks is undefined
@@ -33,6 +36,8 @@ class TrackController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Track::class);
+
         return view('track.create');
     }
 
@@ -41,7 +46,7 @@ class TrackController extends Controller
      */
     public function store(StoreTrackRequest $request)
     {
-        //todo add gate
+        Gate::authorize('create', Track::class);
         
         $validated = $request->validated();
 
@@ -124,7 +129,11 @@ class TrackController extends Controller
      */
     public function show(Track $track)
     {
-        //
+        Gate::authorize('view', $track);
+
+        return view('track.show', [
+            'track' => $track
+        ]);
     }
 
     /**
@@ -132,6 +141,11 @@ class TrackController extends Controller
      */
     public function destroy(Track $track)
     {
-        //
+        Gate::authorize('delete', $track);
+
+        $track->delete();
+
+        return redirect()->route('track.index')
+            ->with('success', 'Track deleted successfully.');
     }
 }

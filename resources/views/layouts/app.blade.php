@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $title }}{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -19,7 +19,7 @@
             @auth
                 @include('layouts.navigation')
             @else
-            @include('layouts.guest-nav')
+                @include('layouts.guest-nav')
             @endauth
             
             <!-- Page Heading -->
@@ -33,7 +33,14 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="py-12">
+                    <div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
+
+                        <x-auth-session-status class="mb-4" :status="session('success')" />
+                        {{ $slot }}
+
+                    </div>
+                </div>
             </main>
         </div>
     </body>

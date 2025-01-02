@@ -83,6 +83,7 @@ class Track extends Model
             $season->totals['activities']['total'] = $season->count();
 
             //get number of days in season by reading name from last track
+            //todo this doesn't work when filtering, since it gets the last entry
             preg_match('/Day (\d{1,3})/', $season->last()->name, $matches);
             $season->totals['activities']['days'] = $matches[1];
 

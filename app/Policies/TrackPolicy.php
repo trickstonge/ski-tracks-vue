@@ -11,9 +11,9 @@ class TrackPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class TrackPolicy
      */
     public function view(User $user, Track $track): bool
     {
-        return false;
+        return $track->user_id === $user->id;
     }
 
     /**
@@ -29,7 +29,7 @@ class TrackPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class TrackPolicy
      */
     public function delete(User $user, Track $track): bool
     {
-        return false;
+        return $track->user_id === $user->id;
     }
 
     /**
@@ -61,6 +61,6 @@ class TrackPolicy
      */
     public function forceDelete(User $user, Track $track): bool
     {
-        return false;
+        return $track->user_id === $user->id;
     }
 }
