@@ -13,7 +13,7 @@
                 {{-- @csrf --}}
                 <div>
                     <x-input-label for="description" value="Description Search" />
-                    <x-text-input id="description" class="block mt-1 w-full" type="text" name="description" value="{{ request('description') }}" />
+                    <x-text-input id="description" type="text" name="description" value="{{ request('description') }}" />
                 </div>
 
                 <div>
