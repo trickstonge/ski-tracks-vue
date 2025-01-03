@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',
+Route::match(['get', 'post'], '/',
     [TrackController::class, 'index'])
 ->name('track.index');
 

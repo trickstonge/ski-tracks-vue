@@ -2,7 +2,7 @@
 <div {{ $attributes->class([]) }}>
     <div class="flex justify-between items-center text-lg">
         {{-- x-dynamic-component is the equivalent of doing <x-fas-person-skiing />. Allows using variable for component name. --}}
-        <div class="w-1/12"><x-dynamic-component :component="$track->getIcon($track->activity)" class="fill-sky-800 h-9" /></div>
+        <div class="w-1/12"><x-dynamic-component :component="App\Models\Track::$icons[$track->activity]" class="fill-sky-800 h-9" /></div>
         <div class="w-3/12">
             {{-- if we're on the track.show view, don't print the link --}}
             @if(Route::is('track.show'))

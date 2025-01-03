@@ -22,6 +22,10 @@ class Track extends Model
         'longitude',
     ];
 
+    public static array $activities = ['skiing' => 'Skiing', 'ski-touring' => 'Ski Touring', 'x-country' => 'Cross Country'];
+
+    public static array $icons = ['skiing' => 'fas-person-skiing', 'ski-touring' => 'ski-touring-icon', 'x-country' => 'fas-skiing-nordic'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -48,16 +52,6 @@ class Track extends Model
         });
     }
 
-    public static function getIcon($activity)
-    {
-        return match($activity)
-        {
-            'skiing' => 'fas-person-skiing',
-            'ski-touring' => 'ski-touring-icon',
-            'x-country' => 'fas-skiing-nordic'
-        };
-    }
-
     public function scopeFilterTracks(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
     {
         return $query->when($filters['description'] ?? null, function ($query, $search) {
@@ -79,7 +73,9 @@ class Track extends Model
             $season->totals = [];
             $season->totals['activities'] = $season->countBy('activity');
             //make sure all 3 keys exist
-            $season->totals['activities'] = array_merge(['skiing' => 0, 'ski-touring' => 0, 'x-country' => 0], $season->totals['activities']->toArray());
+            $season->totals['activities'] = array_merge(
+                array_fill_keys(array_keys(static::$activities), 0),
+                $season->totals['activities']->toArray());
             $season->totals['activities']['total'] = $season->count();
 
             //get number of days

@@ -22,7 +22,8 @@ class TrackController extends Controller
         /** @var \App\Models\Track $user */
         $user = Auth::user();
 
-        $filters = [/*'description' => 'Wildcat'*/];
+        $filters = request()->only(['description', 'activity']);
+        
         $tracks = $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get();
         $tracks = Track::organizeSeasonTotals($tracks);
 

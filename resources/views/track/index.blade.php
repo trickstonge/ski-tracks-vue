@@ -1,8 +1,33 @@
+@php
+    use App\Models\Track;
+@endphp
+
 @auth
     <x-app-layout>
         <x-slot name="header">
             Ski Tracks
         </x-slot>
+
+        <x-card class="mb-8">
+            <form method="GET" action="{{ route('track.index') }}">
+                {{-- @csrf --}}
+                <div>
+                    <x-input-label for="description" value="Description Search" />
+                    <x-text-input id="description" class="block mt-1 w-full" type="text" name="description" value="{{ request('description') }}" />
+                </div>
+
+                <div>
+                    <x-input-label for="activity" value="Activity" />
+                    <x-select name="activity" :options="Track::$activities" />
+                </div>
+            
+                <div class="flex justify-end mt-4">
+                    <x-primary-button>
+                        Filter
+                    </x-primary-button>
+                </div>
+            </form>
+        </x-card>
 
         @forelse ($tracks as $season)
             <x-card class="mb-8">
@@ -10,9 +35,9 @@
                 <div class="flex justify-evenly my-8">
                     <x-activity-icon-total :total="$season->totals['days']" desc="Days" icon="fas-calendar-days" />
                     <x-activity-icon-total :total="$season->totals['activities']['total']" desc="Activities" icon="fas-mountain-sun" />
-                    <x-activity-icon-total :total="$season->totals['activities']['skiing']" :desc="Str::plural('Day', $season->totals['activities']['skiing'])" :icon="App\Models\Track::getIcon('skiing')" />
-                    <x-activity-icon-total :total="$season->totals['activities']['ski-touring']" :desc="Str::plural('Day', $season->totals['activities']['ski-touring'])" :icon="App\Models\Track::getIcon('ski-touring')" />
-                    <x-activity-icon-total :total="$season->totals['activities']['x-country']" :desc="Str::plural('Day', $season->totals['activities']['x-country'])" :icon="App\Models\Track::getIcon('x-country')" />
+                    @foreach(Track::$activities as $key => $value)
+                        <x-activity-icon-total :total="$season->totals['activities'][$key]" :desc="Str::plural('Day', $season->totals['activities'][$key])" icon="{{ Track::$icons[$key] }}" />
+                    @endforeach
                     <x-activity-icon-total :total="$season->totals['runs']" desc="Runs" icon="fas-arrow-trend-down" />
                     <x-activity-icon-total :total="$season->totals['descent']" desc="m" icon="fas-arrow-down-long" />
                     <x-activity-icon-total :total="$season->totals['distance']" desc="km" icon="fas-arrow-right-long" />
@@ -24,7 +49,7 @@
             </x-card>
         @empty
         @php
-            // dd($tracks);
+            dd($tracks);
         @endphp
             <x-card>
                 <p>No tracks yet! <a href="{{ route('track.create') }}" class="underline">Upload some now</a>.</p>

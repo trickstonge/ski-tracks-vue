@@ -14,8 +14,8 @@
 				<x-input-error :messages="$errors->get('files')" class="mt-2" />
 			</div>
 		
-			<div class="flex items-center justify-end mt-4">
-				<x-primary-button class="ms-3">
+			<div class="flex justify-end mt-4">
+				<x-primary-button>
 					Upload Files
 				</x-primary-button>
 			</div>
