@@ -1,8 +1,6 @@
 <x-app-layout title="Upload Tracks">
 	<x-slot name="header">
-		<h1 class="font-semibold text-xl text-gray-800 leading-tight">
-			Upload Tracks
-		</h1>
+		Upload Tracks
 	</x-slot>
 
 	<x-card class="max-w-md m-auto">

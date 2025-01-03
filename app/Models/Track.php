@@ -74,7 +74,7 @@ class Track extends Model
 
     public static function organizeSeasonTotals($tracks)
     {
-        //working on the collection (this group by is not SQL but laravel), count the number of tracks per activity in each season
+        //working on the collection (this group by is not SQL but laravel), calculate totals for each season
         return $tracks->groupBy('season')->transform(function ($season) {
             $season->totals = [];
             $season->totals['activities'] = $season->countBy('activity');
@@ -82,21 +82,29 @@ class Track extends Model
             $season->totals['activities'] = array_merge(['skiing' => 0, 'ski-touring' => 0, 'x-country' => 0], $season->totals['activities']->toArray());
             $season->totals['activities']['total'] = $season->count();
 
-            //get number of days in season by reading name from last track
-            //todo this doesn't work when filtering, since it gets the last entry
-            preg_match('/Day (\d{1,3})/', $season->last()->name, $matches);
-            $season->totals['activities']['days'] = $matches[1];
+            //get number of days
+            $days = $season->map(function ($track)
+            {
+                preg_match('/Day (\d{1,3})/', $track->name, $matches);
+                return $matches[1];
+            });
+            $season->totals['days'] = $days->unique()->count();
 
-            $season->totals['runs'] = $season->filter(function ($track) {
+            //get total runs, only for skiing and ski-touring
+            $season->totals['runs'] = $season->filter(function ($track)
+            {
                 return $track->activity != 'x-country';
             })->sum('metrics.descents');
 
             $season->totals['descent'] = $season->sum('metrics.total_descent');
 
-            $season->totals['distance'] = $season->filter(function ($track) {
+            //distance, total for XC, descent only for others
+            $season->totals['distance'] = $season->filter(function ($track)
+            {
                 return $track->activity == 'x-country';
             })->sum('metrics.distance');
-            $season->totals['distance'] += $season->filter(function ($track) {
+            $season->totals['distance'] += $season->filter(function ($track)
+            {
                 return $track->activity != 'x-country';
             })->sum('metrics.descent_distance');
 
