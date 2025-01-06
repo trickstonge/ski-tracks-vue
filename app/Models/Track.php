@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 
 class Track extends Model
 {
-    protected $fillable = [
+    protected $fillable =
+    [
         'user_id',
         'season',
         'name',
@@ -22,9 +25,23 @@ class Track extends Model
         'longitude',
     ];
 
-    public static array $activities = ['skiing' => 'Skiing', 'ski-touring' => 'Ski Touring', 'x-country' => 'Cross Country'];
+    public static array $activities =
+    [
+        'skiing' => 'Skiing', 
+        'ski-touring' => 'Ski Touring', 
+        'x-country' => 'Cross Country'
+    ];
 
-    public static array $icons = ['skiing' => 'fas-person-skiing', 'ski-touring' => 'ski-touring-icon', 'x-country' => 'fas-skiing-nordic'];
+    public static array $icons =
+    [
+        'skiing' => 'fas-person-skiing', 
+        'ski-touring' => 'ski-touring-icon', 
+        'x-country' => 'fas-skiing-nordic'
+    ];
+
+    protected $casts = [
+        'start' => 'datetime'
+    ];
 
     public function user()
     {
@@ -35,27 +52,21 @@ class Track extends Model
     {
         return $this->hasOne(TrackMetric::class);
     }
-    
-    //event to modify data when retrieved from DB
-    //todo should this logic be in the model? Resources seem specific to building an API, and I found something called transformers but those seem to only be in old versions of laravel.
-    protected static function booted()
+
+    //convert duration to hours and minutes. Called an accessor, modifies value when accessed.
+    protected function duration(): Attribute
     {
-        static::retrieved(function ($track) {
-            //convert duration to hours and minutes
-            if ($track->duration > 3600)
-            { $track->duration = date('g:i', $track->duration); }
-            else
-            { $track->duration = date('i', $track->duration); }
-            //format start time
-            $track->start = date('m/d/y g:i A', strtotime($track->start));
-
-        });
+        return Attribute::make(
+            get: fn (string $value) => $value > 3600 ? date('g:i', $value) : date('i', $value),
+        );
     }
-
+    
     public function scopeFilterTracks(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
     {
-        return $query->when($filters['description'] ?? null, function ($query, $search) {
-            $query->where('description', 'like', '%' . $search . '%');
+        return $query->when($filters['description'] ?? null, function ($query, $description) {
+            $query->where('description', 'like', '%' . $description . '%');
+        })->when($filters['since'] ?? null, function ($query, $since) {
+            $query->where('start', '>=', $since);
         })->when($filters['activity'] ?? null, function ($query, $activity) {
             $query->where('activity', $activity);
         });
@@ -74,7 +85,7 @@ class Track extends Model
             $season->totals['activities'] = $season->countBy('activity');
             //make sure all 3 keys exist
             $season->totals['activities'] = array_merge(
-                array_fill_keys(array_keys(static::$activities), 0),
+                array_fill_keys(array_keys(self::$activities), 0),
                 $season->totals['activities']->toArray());
             $season->totals['activities']['total'] = $season->count();
 
@@ -106,5 +117,16 @@ class Track extends Model
 
             return $season;
         });
+    }
+
+    public static function getFirstTrack($filters)
+    {
+        /** @var \App\Models\Track $user */
+        $user = Auth::user();
+        return $user->tracks()
+            ->where('description', 'like', '%' . $filters['description'] . '%')
+            //need to filter by actvity, otherwise the match may not be returned if the description search was found in a different activity
+            ->where('activity', $filters['activity'])
+            ->orderBy('start', 'asc')->first();
     }
 }

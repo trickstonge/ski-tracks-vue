@@ -7,6 +7,6 @@
     @endif
     
     @foreach ($options as $key => $value)
-        <option value="{{ $key }}" @selected($key == request($name))>{{ $value }}</option>
+        <option value="{{ $key }}" @selected($key == request()->input($name, old($name)))>{{ $value }}</option>
     @endforeach
 </select>

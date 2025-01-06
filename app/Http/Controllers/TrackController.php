@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTrackRequest;
 use App\Models\Track;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class TrackController extends Controller
 {
@@ -18,17 +19,40 @@ class TrackController extends Controller
 
         if (Auth::guest())
         { return view('track.index'); }
+
+        //activity is required if filterType is since
+        $validator = Validator::make(request()->all(), [
+            'activity' => 'required_if:filterType,since',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('track.index')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        
         //the line below defines a DocBlock. It fixes a false error from intelephense that tracks is undefined
         /** @var \App\Models\Track $user */
         $user = Auth::user();
 
-        $filters = request()->only(['description', 'activity']);
-        
+        $filters = request()->only(['description', 'filterType', 'activity']);
+        //if filterType is since, find the first track that matches the description, and add date to filters. Doing it here so we can get and return the ID to highlight in the view.
+        if (isset($filters['filterType']) && $filters['filterType'] == 'since')
+        {
+            $firstTrack = Track::getFirstTrack($filters);
+            if ($firstTrack)
+            {
+                $filters['since'] = $firstTrack->start;
+                //unset description so it's not filtered in the model
+                unset($filters['description']);
+            }
+        }
+
         $tracks = $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get();
         $tracks = Track::organizeSeasonTotals($tracks);
 
         return view('track.index', [
-            'tracks' => $tracks
+            'tracks' => $tracks,
+            'firstTrackID' => $firstTrack->id ?? null
         ]);
     }
 
