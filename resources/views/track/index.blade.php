@@ -50,6 +50,7 @@
                     <x-activity-icon-total :total="$season->totals['runs']" desc="{{ Str::plural('Run', $season->totals['runs']) }}" icon="fas-arrow-trend-down" />
                     <x-activity-icon-total :total="$season->totals['descent']" desc="m" icon="fas-arrow-down-long" />
                     <x-activity-icon-total :total="$season->totals['distance']" desc="km" icon="fas-arrow-right-long" />
+                    <x-activity-icon-total :total="$season->totals['time']" desc=" Hours" icon="far-clock" />
                 </div>
 
                 @foreach ($season as $track)

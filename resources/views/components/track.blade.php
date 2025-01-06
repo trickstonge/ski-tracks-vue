@@ -13,7 +13,7 @@
         </div>
         <div class="w-5/12">{{ $track->description }}</div>
         <div class="w-2/12">{{ $track->start->format('n/d/y g:i A') }}</div>
-        <div class="w-1/12 text-right">{{ $track->duration }}</div>
+        <div class="w-1/12 text-right">{{ $track->duration_formated }}</div>
     </div>
     <div class="flex justify-between items-center mt-4 text-gray-600">
         @if ($track->activity == 'x-country')

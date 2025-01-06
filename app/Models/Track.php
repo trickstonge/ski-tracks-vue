@@ -53,14 +53,15 @@ class Track extends Model
         return $this->hasOne(TrackMetric::class);
     }
 
-    //convert duration to hours and minutes. Called an accessor, modifies value when accessed.
-    protected function duration(): Attribute
+    //add an attribute for formated duration. Called an accessor
+    protected function durationFormated(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value > 3600 ? date('g:i', $value) : date('i', $value),
+            get: fn () => $this->duration > 3600 ? date('g:i', $this->duration) : date('i', $this->duration),
         );
     }
     
+    //filters for search form
     public function scopeFilterTracks(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
     {
         return $query->when($filters['description'] ?? null, function ($query, $description) {
@@ -115,10 +116,13 @@ class Track extends Model
                 return $track->activity != 'x-country';
             })->sum('metrics.descent_distance');
 
+            $season->totals['time'] = round($season->sum('duration') / 3600);
+
             return $season;
         });
     }
 
+    //get the first track that matches description. Used when filter type is since.
     public static function getFirstTrack($filters)
     {
         /** @var \App\Models\Track $user */
