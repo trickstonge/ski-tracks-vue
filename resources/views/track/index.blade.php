@@ -1,7 +1,3 @@
-@php
-    use App\Models\Track;
-@endphp
-
 @auth
     <x-app-layout>
         <x-slot name="header">
@@ -26,7 +22,7 @@
             
                 <div class="grow">
                     <x-input-label for="activity" value="Activity" />
-                    <x-select name="activity" :options="Track::$activities" all />
+                    <x-select name="activity" :options="App\Models\Track::$activities" all />
                     <x-input-error :messages="$errors->get('activity')" class="mt-2" />
                 </div>
 
@@ -38,20 +34,17 @@
             </form>
         </x-card>
 
+        @if ($totals)
+            <x-card class="mb-8">
+                <h2 class="text-2xl text-gray-800 font-semibold">All Seasons</h2>
+                <x-totals :totals="$totals" class="mt-6" />
+            </x-card>
+        @endif
+        
         @forelse ($tracks as $season)
             <x-card class="mb-8">
                 <h2 class="text-2xl text-gray-800 font-semibold">{{ $season->first()->season }}</h2>
-                <div class="flex justify-evenly my-8">
-                    <x-activity-icon-total :total="$season->totals['days']" desc="{{ Str::plural('Day', $season->totals['days']) }}" icon="fas-calendar-days" />
-                    <x-activity-icon-total :total="$season->totals['activities']['total']" desc="{{ Str::plural('Activity', $season->totals['activities']['total']) }}" icon="fas-mountain-sun" />
-                    @foreach(Track::$activities as $key => $value)
-                        <x-activity-icon-total :total="$season->totals['activities'][$key]" :desc="Str::plural('Day', $season->totals['activities'][$key])" icon="{{ Track::$icons[$key] }}" />
-                    @endforeach
-                    <x-activity-icon-total :total="$season->totals['runs']" desc="{{ Str::plural('Run', $season->totals['runs']) }}" icon="fas-arrow-trend-down" />
-                    <x-activity-icon-total :total="$season->totals['descent']" desc="m" icon="fas-arrow-down-long" />
-                    <x-activity-icon-total :total="$season->totals['distance']" desc="km" icon="fas-arrow-right-long" />
-                    <x-activity-icon-total :total="$season->totals['time']" desc=" Hours" icon="far-clock" />
-                </div>
+                <x-totals :totals="$season->totals" class="my-6" />
 
                 @foreach ($season as $track)
                     <x-track :$track @class(['py-4 border-t border-sky-500', 'bg-sky-100' => $track->id == $firstTrackID]) />

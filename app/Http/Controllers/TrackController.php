@@ -38,7 +38,7 @@ class TrackController extends Controller
         //if filterType is since, find the first track that matches the description, and add date to filters. Doing it here so we can get and return the ID to highlight in the view.
         if (isset($filters['filterType']) && $filters['filterType'] == 'since')
         {
-            $firstTrack = Track::getFirstTrack($filters);
+            $firstTrack = $user->tracks()->firstTrack($filters)->first();
             if ($firstTrack)
             {
                 $filters['since'] = $firstTrack->start;
@@ -48,10 +48,11 @@ class TrackController extends Controller
         }
 
         $tracks = $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get();
-        $tracks = Track::organizeSeasonTotals($tracks);
-
+        $tracks = Track::seasonTotals($tracks);
+        $totals = Track::grandTotals($tracks);
         return view('track.index', [
             'tracks' => $tracks,
+            'totals' => $totals,
             'firstTrackID' => $firstTrack->id ?? null
         ]);
     }

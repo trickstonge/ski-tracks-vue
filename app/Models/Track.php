@@ -78,7 +78,44 @@ class Track extends Model
         return $query->orderBy('season', 'desc')->orderBy('start', 'asc');
     }
 
-    public static function organizeSeasonTotals($tracks)
+    //get the first track that matches description. Used when filter type is since.
+    public function scopeFirstTrack(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
+    {
+        return $query->where('description', 'like', '%' . $filters['description'] . '%')
+            //need to filter by actvity, otherwise the match may not be returned if the description search was found in a different activity
+            ->where('activity', $filters['activity'])
+            ->orderBy('start', 'asc');
+    }
+    
+    //calculate totals for all seasons
+    public static function grandTotals($tracks)
+    {
+        $seasons = $tracks->pluck('totals');
+        $totals = [];
+
+        $seasons->each(function($season) use (&$totals)
+        {
+            foreach ($season as $key => $value)
+            {
+                if ($key == 'activities')
+                {
+                    foreach ($value as $activity => $count)
+                    {
+                        $totals['activities'][$activity] = ($totals['activities'][$activity] ?? 0) + $count;
+                    }
+                }
+                else
+                {
+                    $totals[$key] = ($totals[$key] ?? 0) + $value;
+                }
+            }
+        });
+        
+        return $totals;
+
+    }
+
+    public static function seasonTotals($tracks)
     {
         //working on the collection (this group by is not SQL but laravel), calculate totals for each season
         return $tracks->groupBy('season')->transform(function ($season) {
@@ -122,15 +159,4 @@ class Track extends Model
         });
     }
 
-    //get the first track that matches description. Used when filter type is since.
-    public static function getFirstTrack($filters)
-    {
-        /** @var \App\Models\Track $user */
-        $user = Auth::user();
-        return $user->tracks()
-            ->where('description', 'like', '%' . $filters['description'] . '%')
-            //need to filter by actvity, otherwise the match may not be returned if the description search was found in a different activity
-            ->where('activity', $filters['activity'])
-            ->orderBy('start', 'asc')->first();
-    }
 }
