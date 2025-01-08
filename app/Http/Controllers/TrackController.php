@@ -48,8 +48,11 @@ class TrackController extends Controller
         }
 
         $tracks = $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get();
+        if ($user->imperial)
+        { $tracks = Track::convertUnits($tracks); }
         $tracks = Track::seasonTotals($tracks);
         $totals = Track::grandTotals($tracks);
+        
         return view('track.index', [
             'tracks' => $tracks,
             'totals' => $totals,
@@ -76,7 +79,7 @@ class TrackController extends Controller
         
         $validated = $request->validated();
 
-        $files = $request->file('files');
+        $files = $validated['files'];
         foreach ($files as $file)
         {
             //todo should all this logic be in the model?
@@ -86,6 +89,9 @@ class TrackController extends Controller
             //get season years from name
             preg_match('/(\d{4})\/(\d{4})/', $jsonTrack['name'], $season);
             $jsonTrack['season'] = $season[0];
+
+            //remove weird and extra spaces from description
+            $jsonTrack['description'] = preg_replace(['/\xc2\xa0/', '/\s+/'], [' ', ' '], $jsonTrack['description']);
 
             //adjust times to timezone
             $timezone = new \DateTimeZone($jsonTrack['tz']);

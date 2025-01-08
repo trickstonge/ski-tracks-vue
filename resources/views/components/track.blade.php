@@ -1,3 +1,7 @@
+@php
+    $units = Auth::user()->units;
+@endphp
+
 {{-- $attributes->class takes classes passed into the component and adds them to the ones below, empty in this case --}}
 <div {{ $attributes->class([]) }}>
     <div class="flex justify-between items-center text-lg">
@@ -18,16 +22,16 @@
     <div class="flex justify-between items-center mt-4 text-gray-600">
         @if ($track->activity == 'x-country')
             <div class="w-1/12"></div>
-            <div class="w-3/12">Avg Speed: {{ $track->metrics->average_speed }} km/h</div>
-            <div class="w-3/12">Max Speed: {{ $track->metrics->max_speed }} km/h</div>
-            <div class="w-2/12">Vertical: {{ $track->metrics->total_descent }} m</div>
-            <div class="w-3/12">Distance: {{ $track->metrics->distance }} km</div>
+            <div class="w-3/12">Avg Speed: {{ $track->metrics->average_speed }} {{ $units['speed'] }}</div>
+            <div class="w-3/12">Max Speed: {{ $track->metrics->max_speed }} {{ $units['speed'] }}</div>
+            <div class="w-2/12">Vertical: {{ $track->metrics->total_descent }} {{ $units['vertical'] }}</div>
+            <div class="w-3/12">Distance: {{ $track->metrics->distance }} {{ $units['distance'] }}</div>
         @else
             <div class="w-1/12">{{ $track->metrics->descents }} {{ Str::plural('Run', $track->metrics->descents) }} </div>
-            <div class="w-3/12">Avg Descent Speed: {{ $track->metrics->average_descent_speed }} km/h</div>
-            <div class="w-3/12">Max Speed: {{ $track->metrics->max_speed }} km/h</div>
-            <div class="w-2/12">Vertical: {{ $track->metrics->total_descent }} m</div>
-            <div class="w-3/12">Ski Distance: {{ $track->metrics->descent_distance }} km</div>
+            <div class="w-3/12">Avg Descent Speed: {{ $track->metrics->average_descent_speed }} {{ $units['speed'] }}</div>
+            <div class="w-3/12">Max Speed: {{ $track->metrics->max_speed }} {{ $units['speed'] }}</div>
+            <div class="w-2/12">Vertical: {{ $track->metrics->total_descent }} {{ $units['vertical'] }}</div>
+            <div class="w-3/12">Ski Distance: {{ $track->metrics->descent_distance }} {{ $units['distance'] }}</div>
         @endif
     </div>
 

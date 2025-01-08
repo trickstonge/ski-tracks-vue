@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'imperial'
     ];
 
     /**
@@ -44,6 +47,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    //attribute for units
+    protected function units(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => [
+                'speed' => $this->imperial ? 'mph' : 'km/h',
+                'distance' => $this->imperial ? 'mi' : 'km',
+                'vertical' => $this->imperial ? 'ft' : 'm',
+            ],
+        );
     }
 
     public function tracks()

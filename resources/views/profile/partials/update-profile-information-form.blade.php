@@ -47,6 +47,13 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="imperial" value="Default Units" class="mb-1" />
+            <input type="radio" name="imperial" value="0" @checked(!$user->imperial)> Metric
+            <input type="radio" name="imperial" value="1" class="ml-4" @checked($user->imperial)> Imperial
+        </div>
+
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

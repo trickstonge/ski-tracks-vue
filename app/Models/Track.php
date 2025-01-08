@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Auth;
 
 class Track extends Model
 {
@@ -119,6 +118,7 @@ class Track extends Model
     {
         //working on the collection (this group by is not SQL but laravel), calculate totals for each season
         return $tracks->groupBy('season')->transform(function ($season) {
+            //todo adding a property like this is deprecated, not sure how else to do it. I would lose the ability to get totals trough the loop in the view
             $season->totals = [];
             $season->totals['activities'] = $season->countBy('activity');
             //make sure all 3 keys exist
@@ -159,4 +159,26 @@ class Track extends Model
         });
     }
 
+    public static function convertUnits($tracks)
+    {
+        return $tracks->each(function ($track)
+        {
+            $track->metrics->distance = round($track->kmToMiles($track->metrics->distance), 1);
+            $track->metrics->descent_distance = round($track->kmToMiles($track->metrics->descent_distance), 1);
+            $track->metrics->average_speed = round($track->kmToMiles($track->metrics->average_speed), 1);
+            $track->metrics->max_speed = round($track->kmToMiles($track->metrics->max_speed), 1);
+            $track->metrics->average_descent_speed = round($track->kmToMiles($track->metrics->average_descent_speed), 1);
+            $track->metrics->total_descent = round($track->metersToFeet($track->metrics->total_descent), 1);
+        });
+    }
+
+    private function kmToMiles($km): float
+    {
+        return $km * 0.621371;
+    }
+
+    private function metersToFeet($meters): float
+    {
+        return $meters * 3.28084;
+    }
 }
