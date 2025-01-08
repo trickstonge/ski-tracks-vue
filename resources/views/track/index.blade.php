@@ -6,8 +6,8 @@
 
         {{-- x-data sets it as an alpine JS component, so it starts paying attention to it. Used in text-input.blade.php. Sets value for description. --}}
         <x-card class="mb-8" x-data="{ description: '{{ request()->input('description', old('description')) }}' }">
-            <form method="GET" action="{{ route('track.index') }}" x-ref="filters" class="flex gap-5 md:block">
-                {{-- @csrf --}}
+            <form method="POST" action="{{ route('track.index') }}" x-ref="filters" class="flex gap-5 md:block">
+                @csrf
                 <div class="grow">
                     <x-input-label for="description" value="Description Search" />
                     {{-- x-model makes this input use the value of description, set above in x-data --}}
@@ -51,9 +51,12 @@
                 @endforeach
             </x-card>
         @empty
-        {{-- todo no results vs no tracks yet --}}
             <x-card>
-                <p>No tracks yet! <a href="{{ route('track.create') }}" class="underline">Upload some now</a>.</p>
+                @if ($noTracks)
+                    <p>You haven't uploaded any tracks yet! <a href="{{ route('track.create') }}" class="underline">Upload some now</a>.</p>
+                @else
+                    <p>No tracks match the selected filters.</p>
+                @endif
             </x-card>
         @endforelse
     </x-app-layout>

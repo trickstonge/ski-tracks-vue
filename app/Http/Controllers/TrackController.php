@@ -48,15 +48,26 @@ class TrackController extends Controller
         }
 
         $tracks = $user->tracks()->with('metrics')->filterTracks($filters)->orderSeason()->get();
-        if ($user->imperial)
-        { $tracks = Track::convertUnits($tracks); }
-        $tracks = Track::seasonTotals($tracks);
-        $totals = Track::grandTotals($tracks);
         
+        if ($tracks->isEmpty())
+        {
+            //check if the user has any tracks, to determine between no results and no uploaded data
+            if ($user->tracks->isEmpty())
+            { $noTracks = true; }
+        }
+        else
+        {
+            if ($user->imperial)
+            { $tracks = Track::convertUnits($tracks); }
+            $tracks = Track::seasonTotals($tracks);
+            $totals = Track::grandTotals($tracks);
+        }
+
         return view('track.index', [
-            'tracks' => $tracks,
-            'totals' => $totals,
-            'firstTrackID' => $firstTrack->id ?? null
+            'tracks' => $tracks ?? null,
+            'totals' => $totals ?? null,
+            'firstTrackID' => $firstTrack->id ?? null,
+            'noTracks' => $noTracks ?? false
         ]);
     }
 
