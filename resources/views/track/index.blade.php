@@ -6,7 +6,7 @@
 
         {{-- x-data sets it as an alpine JS component, so it starts paying attention to it. Used in text-input.blade.php. Sets value for description. --}}
         <x-card class="mb-8" x-data="{ description: '{{ request()->input('description', old('description')) }}' }">
-            <form method="GET" action="{{ route('track.index') }}" x-ref="filters" class="flex gap-5">
+            <form method="GET" action="{{ route('track.index') }}" x-ref="filters" class="flex gap-5 md:block">
                 {{-- @csrf --}}
                 <div class="grow">
                     <x-input-label for="description" value="Description Search" />
@@ -14,13 +14,13 @@
                     <x-text-input id="description" type="text" name="description" x-model="description" close />
                 </div>
 
-                <div class="grow">
+                <div class="grow md:mt-4">
                     <x-input-label for="filterType" value="Filter Type" />
                     {{-- x-bind:disabled changes if there's a value in the description field --}}
                     <x-select name="filterType" :options="['normal' => 'Normal', 'since' => 'Days Since']" x-bind:disabled="description.length == 0" />
                 </div>
             
-                <div class="grow">
+                <div class="grow md:mt-4">
                     <x-input-label for="activity" value="Activity" />
                     <x-select name="activity" :options="App\Models\Track::$activities" all />
                     <x-input-error :messages="$errors->get('activity')" class="mt-2" />
