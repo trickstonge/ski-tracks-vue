@@ -41,8 +41,8 @@
 
         <div class="mt-4">
             <x-input-label for="imperial" value="Default Units" class="mb-1" />
-            <input type="radio" name="imperial" value="0" checked> Metric
-            <input type="radio" name="imperial" value="1" class="ml-4"> Imperial
+            <input type="radio" name="imperial" id="unit_metric" value="0" checked> <label for="unit_metric">Metric</label>
+            <input type="radio" name="imperial" id="unit_imperial" value="1" class="ml-4"> <label for="unit_imperial">Imperial</label>
         </div>
 
 

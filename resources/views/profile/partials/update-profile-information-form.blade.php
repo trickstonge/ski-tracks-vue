@@ -49,8 +49,8 @@
 
         <div>
             <x-input-label for="imperial" value="Default Units" class="mb-1" />
-            <input type="radio" name="imperial" value="0" @checked(!$user->imperial)> Metric
-            <input type="radio" name="imperial" value="1" class="ml-4" @checked($user->imperial)> Imperial
+            <input type="radio" name="imperial" id="unit_metric" value="0" @checked(!$user->imperial)> <label for="unit_metric">Metric</label>
+            <input type="radio" name="imperial" id="unit_imperial" value="1" class="ml-4" @checked($user->imperial)> <label for="unit_imperial">Imperial</label>
         </div>
 
 

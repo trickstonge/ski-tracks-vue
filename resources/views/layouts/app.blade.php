@@ -16,11 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-sky-100">
-            @auth
-                @include('layouts.navigation')
-            @else
-                @include('layouts.guest-nav')
-            @endauth
+            @include('layouts.navigation')
             
             <!-- Page Heading -->
             @isset($header)
