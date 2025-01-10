@@ -43,10 +43,10 @@
         
         @forelse ($tracks as $season)
             <x-card class="mb-8">
-                <h2 class="text-2xl text-gray-800 font-semibold">{{ $season->first()->season }}</h2>
-                <x-totals :totals="$season->totals" class="my-6" />
+                <h2 class="text-2xl text-gray-800 font-semibold">{{ $season['tracks']->first()->season }}</h2>
+                <x-totals :totals="$season['totals']" class="my-6" />
 
-                @foreach ($season as $track)
+                @foreach ($season['tracks'] as $track)
                     <x-track :$track @class(['py-4 border-t border-sky-500', 'bg-sky-100' => $track->id == $firstTrackID]) />
                 @endforeach
             </x-card>

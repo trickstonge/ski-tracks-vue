@@ -116,16 +116,18 @@ class Track extends Model
 
     public static function seasonTotals($tracks)
     {
-        //working on the collection (this group by is not SQL but laravel), calculate totals for each season
-        return $tracks->groupBy('season')->transform(function ($season) {
-            //todo adding a property like this is deprecated, not sure how else to do it. I would lose the ability to get totals trough the loop in the view
-            $season->totals = [];
-            $season->totals['activities'] = $season->countBy('activity');
+        //working on the collection (this group by is not SQL but laravel), group by season
+        $tracks = $tracks->groupBy('season');
+        
+        //calculate totals for each season
+        $seasonTotals = $tracks->map(function ($season) {
+            $totals = [];
+            $totals['activities'] = $season->countBy('activity');
             //make sure all 3 keys exist
-            $season->totals['activities'] = array_merge(
+            $totals['activities'] = array_merge(
                 array_fill_keys(array_keys(self::$activities), 0),
-                $season->totals['activities']->toArray());
-            $season->totals['activities']['total'] = $season->count();
+                $totals['activities']->toArray());
+            $totals['activities']['total'] = $season->count();
 
             //get number of days
             $days = $season->map(function ($track)
@@ -133,32 +135,44 @@ class Track extends Model
                 preg_match('/Day (\d{1,3})/', $track->name, $matches);
                 return $matches[1];
             });
-            $season->totals['days'] = $days->unique()->count();
+            $totals['days'] = $days->unique()->count();
 
             //get total runs, only for skiing and ski-touring
-            $season->totals['runs'] = $season->filter(function ($track)
+            $totals['runs'] = $season->filter(function ($track)
             {
                 return $track->activity != 'x-country';
             })->sum('metrics.descents');
 
-            $season->totals['descent'] = $season->sum('metrics.total_descent');
+            $totals['descent'] = $season->sum('metrics.total_descent');
 
             //distance, total for XC, descent only for others
-            $season->totals['distance'] = $season->filter(function ($track)
+            $totals['distance'] = $season->filter(function ($track)
             {
                 return $track->activity == 'x-country';
             })->sum('metrics.distance');
-            $season->totals['distance'] += $season->filter(function ($track)
+            $totals['distance'] += $season->filter(function ($track)
             {
                 return $track->activity != 'x-country';
             })->sum('metrics.descent_distance');
 
-            $season->totals['time'] = round($season->sum('duration') / 3600);
+            $totals['time'] = round($season->sum('duration') / 3600);
 
-            return $season;
+            return $totals;
+        });
+
+        //get keys to use with map
+        $seasons = $tracks->keys();
+        //zip combines the two collections (tracks and seasonTotals) into one, then mapWithKeys creates a new collection with the season keys
+        return $tracks->zip($seasonTotals)->mapWithKeys(function ($item, $key) use ($seasons) {
+            //once again for the track and totals keys
+            $item = $item->mapWithKeys(function ($value, $key) {
+                return $key === 0 ? ['tracks' => $value] : ['totals' => $value];
+            });
+            return [$seasons[$key] => $item];
         });
     }
 
+    //process the json track file when uploaded
     public static function processTrack($file)
     {
         $jsonTrack = json_decode(file_get_contents($file), true);
