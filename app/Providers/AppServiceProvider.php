@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('nav', [
                     'Tracks' => 'track.index',
                     'Upload Tracks' => 'track.create',
+                    'About' => 'about',
                 ]);
             }
             else
