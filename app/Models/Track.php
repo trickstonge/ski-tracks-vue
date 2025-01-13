@@ -177,6 +177,10 @@ class Track extends Model
     {
         $jsonTrack = json_decode(file_get_contents($file), true);
 
+        //only save skiing, ski-touring, and x-country
+        if (!in_array($jsonTrack['activity'], ['skiing', 'ski-touring', 'x-country']))
+        { return; }
+
         //get season years from name
         preg_match('/(\d{4})\/(\d{4})/', $jsonTrack['name'], $season);
         $jsonTrack['season'] = $season[0];

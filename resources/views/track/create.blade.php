@@ -10,7 +10,7 @@
 		
 			<div>
 				<x-input-label for="files" value="Files" />
-				<x-text-input id="files" type="file" name="files[]" accept="application/json" autofocus multiple  />
+				<x-text-input id="files" type="file" name="files[]" accept=".skiz" autofocus multiple  />
 				<x-input-error :messages="$errors->get('files')" class="mt-2" />
 			</div>
 		

@@ -91,14 +91,30 @@ class TrackController extends Controller
         $validated = $request->validated();
 
         $files = $validated['files'];
+        //save each file to storage
         foreach ($files as $file)
         {
+            $skizPath = $file->store('skiz', 'local');
+            // Convert .skiz file to .json file
+            //todo is the public folder the best spot for this js file?
+            $command = "node skiz-json.js ../storage/app/private/$skizPath";
+            //exec appends each itiration to $paths
+            exec($command, $paths);
+        }
+
+        //process each json file
+        foreach($paths as $file)
+        {
+            //todo not sure what type of errors could happen here. Test files too large but that's before this point.
             $result = Track::processTrack($file);
 
-            /** @var \App\Models\Track $user */
-            $user = Auth::user();
-            $track = $user->tracks()->create($result['jsonTrack']);
-            $track->metrics()->create($result['dbMetrics']);
+            if ($result)
+            {
+                /** @var \App\Models\Track $user */
+                $user = Auth::user();
+                $track = $user->tracks()->create($result['jsonTrack']);
+                $track->metrics()->create($result['dbMetrics']);
+            }
         }
 
         return redirect()->route('track.index')
