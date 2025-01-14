@@ -102,16 +102,17 @@ class TrackController extends Controller
             exec($command, $paths);
         }
 
+        /** @var \App\Models\Track $user */
+        $user = Auth::user();
+
         //process each json file
         foreach($paths as $file)
         {
             //todo not sure what type of errors could happen here. Test files too large but that's before this point.
-            $result = Track::processTrack($file);
+            $result = Track::processTrack($file, $user);
 
             if ($result)
             {
-                /** @var \App\Models\Track $user */
-                $user = Auth::user();
                 $track = $user->tracks()->create($result['jsonTrack']);
                 $track->metrics()->create($result['dbMetrics']);
             }

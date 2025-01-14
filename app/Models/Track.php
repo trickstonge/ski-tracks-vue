@@ -173,12 +173,19 @@ class Track extends Model
     }
 
     //process the json track file when uploaded
-    public static function processTrack($file)
+    public static function processTrack($file, $user)
     {
         $jsonTrack = json_decode(file_get_contents($file), true);
 
         //only save skiing, ski-touring, and x-country
         if (!in_array($jsonTrack['activity'], ['skiing', 'ski-touring', 'x-country']))
+        { return; }
+
+        //check if track exists using name, description, and activity
+        if ($user->tracks()->where('name', $jsonTrack['name'])
+            ->where('description', $jsonTrack['description'])
+            ->where('activity', $jsonTrack['activity'])
+            ->exists())
         { return; }
 
         //get season years from name
