@@ -45,7 +45,7 @@ class TrackPolicy
      */
     public function delete(User $user, Track $track): bool
     {
-        return $track->user_id === $user->id;
+        return $track->user_id === $user->id && $user->id != 2;
     }
 
     /**
@@ -61,6 +61,6 @@ class TrackPolicy
      */
     public function forceDelete(User $user, Track $track): bool
     {
-        return $track->user_id === $user->id;
+        return $track->user_id === $user->id && $user->id != 2;
     }
 }
