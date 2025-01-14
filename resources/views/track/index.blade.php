@@ -62,14 +62,5 @@
     </x-app-layout>
 
 @else
-    <x-app-layout>
-        <x-slot name="header">
-            Ski Tracks
-        </x-slot>
-
-        <x-card>
-            Not authenticated
-        </x-card>
-    </x-app-layout>
-
+    @include('about')
 @endauth

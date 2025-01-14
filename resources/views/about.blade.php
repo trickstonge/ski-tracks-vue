@@ -5,6 +5,11 @@
 
     <x-card>
         <p class="mb-4">This website allows you search and filter your ski days from the Ski Tracks mobile app. Ski tracks must first be exported from your phone, and then uploaded here. Instructions to do so are further down on this page.</p>
+
+        @guest
+            <p class="mb-4 font-semibold">To get started, <a href="{{ route('login') }}" class="underline">log in</a> or <a href="{{ route('register') }}" class="underline">register</a> for an account.</p>
+        @endguest
+
         <p class="mb-4">This site is most useful if you've added a description to your ski days, as you can then search for specific words or phrases. The default in Ski Tracks is to add the name of the mountain in the description, so at the very least you can easily filter all your days at a specific mountain. Say you also add which ski you used for each day, that would also allow you to find out how many ski days you have on that ski.</p>
         <p class="mb-4">The filter type of "Days Since" is useful for searching for a description that has only been used once. Say you start using a new pair of boots, and in the description you've added "first day on X boots". Search for the name of the boots, use "Days Since" and choose the activity type, and you can see all your ski days since you've had those boots. When using this filter, the matched ski day will be highlighted with a blue background.</p> 
 
@@ -16,7 +21,8 @@
         </ul>
         <h2 class="font-semibold mb-4 text-lg">Importing Tracks</h2>
         <p class="mb-4">To import your ski tracks, you must first export them from the Ski Tracks app. Go to Settings, Tools, then Backup. Any previously backed up activity will not appear on this screen. Click the refresh icon on the top right of the screen to create the backup files. Once this step is done, it's time to move the files to your computer.</p>
-        <p class="mb-4">This is specific to Macs, and I don't have access to a Windows computer, but there must be a way to transfer the .skiz files in Windows. In the Finder, go to your iPhone, and the Files tab. Open the Ski Tracks Folder, then copy the Backup folder to your computer. It doesn't seem possible to open this folder, so copying the entire folder is necessary. Once copied, upload the .skiz files in the backup folder to this website on the "Upload Tracks" page.</p>
+        <p class="mb-4">The following is specific to Macs. I don't have access to a Windows computer, but there must be a way to transfer the .skiz files in Windows. <a href="https://support.apple.com/guide/itunes/transfer-files-itns32636/windows" class="underline">This guide from Apple may help.</a></p>
+        <p class="mb-4">Connect your phone to your computer. In the Finder, go to your iPhone, and the Files tab. Open the Ski Tracks Folder, then copy the Backup folder to your computer. It doesn't seem possible to open this folder, so copying the entire folder is necessary. Once copied, upload the .skiz files in the backup folder to this website on the "Upload Tracks" page.</p>
 
         <p class="mb-4">Alternatively, if you only have a few tracks to export, they can be AirDropped individually. In the Ski Tracks app, go to the track you want to export, tap the share icon on the bottom right, and then AirDrop it to your computer as the SKIZ format. Repeat for other tracks, then upload the .skiz files to this website on the "Upload Tracks" page.</p>
     </x-card>

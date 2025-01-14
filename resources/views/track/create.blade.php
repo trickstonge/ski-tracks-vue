@@ -9,7 +9,7 @@
 			@csrf
 		
 			<div>
-				<x-input-label for="files" value="Files" />
+				<x-input-label for="files" value="Select .skiz files" />
 				<x-text-input id="files" type="file" name="files[]" accept=".skiz" autofocus multiple  />
 				<x-input-error :messages="$errors->get('files')" class="mt-2" />
 			</div>
