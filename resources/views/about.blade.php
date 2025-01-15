@@ -25,5 +25,9 @@
         <p class="mb-4">Connect your phone to your computer. In the Finder, go to your iPhone, and the Files tab. Open the Ski Tracks Folder, then copy the Backup folder to your computer. It doesn't seem possible to open this folder, so copying the entire folder is necessary. Once copied, upload the .skiz files in the backup folder to this website on the "Upload Tracks" page.</p>
 
         <p class="mb-4">Alternatively, if you only have a few tracks to export, they can be AirDropped individually. In the Ski Tracks app, go to the track you want to export, tap the share icon on the bottom right, and then AirDrop it to your computer as the SKIZ format. Repeat for other tracks, then upload the .skiz files to this website on the "Upload Tracks" page.</p>
+        
+        <h2 class="font-semibold mb-4 text-lg">Importing Tracks from your iPhone</h2>
+        <p class="mb-4">It's also possible to upload the files directly from your iPhone. Create the backup files in Ski Tracks as explained above. On the Upload Tracks page, click Choose Files. On the screen that pops up, find "On My iPhone" and you should see a "Ski Tracks" folder. Click the Backup folder, and on the next screen you can select individual files to upload.</p>
+
     </x-card>
 </x-app-layout>
