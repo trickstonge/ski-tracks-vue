@@ -96,8 +96,7 @@ class TrackController extends Controller
         {
             $skizPath = $file->store('skiz', 'local');
             // Convert .skiz file to .json file
-            //todo is the public folder the best spot for this js file?
-            $command = "node skiz-json.js ../storage/app/private/$skizPath";
+            $command = "node ../resources/js/skiz-json.js ../storage/app/private/$skizPath";
             //exec appends each itiration to $paths
             exec($command, $paths);
         }

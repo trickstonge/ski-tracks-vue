@@ -180,6 +180,9 @@ class Track extends Model
         //only save skiing, ski-touring, and x-country
         if (!in_array($jsonTrack['activity'], ['skiing', 'ski-touring', 'x-country']))
         { return; }
+        
+        //remove weird and extra spaces from description
+        $jsonTrack['description'] = preg_replace(['/\xc2\xa0/', '/\s+/'], [' ', ' '], $jsonTrack['description']);
 
         //check if track exists using name, description, and activity
         if ($user->tracks()->where('name', $jsonTrack['name'])
@@ -191,9 +194,6 @@ class Track extends Model
         //get season years from name
         preg_match('/(\d{4})\/(\d{4})/', $jsonTrack['name'], $season);
         $jsonTrack['season'] = $season[0];
-
-        //remove weird and extra spaces from description
-        $jsonTrack['description'] = preg_replace(['/\xc2\xa0/', '/\s+/'], [' ', ' '], $jsonTrack['description']);
 
         //adjust times to timezone
         $timezone = new \DateTimeZone($jsonTrack['tz']);
