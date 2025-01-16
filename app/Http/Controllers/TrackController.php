@@ -107,7 +107,6 @@ class TrackController extends Controller
         //process each json file
         foreach($paths as $file)
         {
-            //todo not sure what type of errors could happen here. Test files too large but that's before this point.
             $result = Track::processTrack($file, $user);
 
             if ($result)

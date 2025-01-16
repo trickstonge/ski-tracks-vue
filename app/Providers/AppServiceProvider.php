@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //define nav items based on auth status
         View::composer('*', function ($view) {
             if (Auth::check())
             {
