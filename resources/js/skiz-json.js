@@ -8,7 +8,7 @@ import { parseSkizFile } from 'skiz-parser';
 
     delete result.batteryUsage;
     delete result.relativeAltitude;
-    result.trackNodes = result.trackNodes.slice(0, 1);
+    result.trackNodes = result.trackNodes.slice(2, 3);
 
     const jsonFilePath = filePath.replace('skiz', 'json').replace('.zip', '.json');
     await writeFile(jsonFilePath, JSON.stringify(result, null, 2));
