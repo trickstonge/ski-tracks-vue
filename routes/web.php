@@ -8,7 +8,10 @@ Route::match(['get', 'post'], '/',
     [TrackController::class, 'index'])
 ->name('track.index');
 
-Route::resource('track', TrackController::class)->middleware(['auth', 'verified'])->except(['index', 'edit', 'update']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('track', TrackController::class)->except(['index', 'edit', 'update']);
+    Route::get('map', [TrackController::class, 'map'])->name('track.map');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('about', fn() => view('about') )->name('about');

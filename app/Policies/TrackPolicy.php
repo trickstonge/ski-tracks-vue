@@ -63,4 +63,9 @@ class TrackPolicy
     {
         return $track->user_id === $user->id && $user->id != 2;
     }
+
+    public function viewMap(User $user): bool
+    {
+        return true;
+    }
 }

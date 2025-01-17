@@ -144,4 +144,17 @@ class TrackController extends Controller
         return redirect()->route('track.index')
             ->with('success', 'Track deleted successfully.');
     }
+
+    public function map()
+    {
+        Gate::authorize('viewMap', Track::class);
+
+        /** @var \App\Models\Track $user */
+        $user = Auth::user();
+        $tracks = $user->tracks()->select('name','description','activity','latitude','longitude')->get();
+
+        return view('track.map', [
+            'tracks' => $tracks
+        ]);
+    }
 }
