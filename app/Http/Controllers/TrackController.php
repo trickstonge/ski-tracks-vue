@@ -154,7 +154,7 @@ class TrackController extends Controller
         /** @var \App\Models\Track $user */
         $user = Auth::user();
 
-        $seasons = $user->tracks()->select('season')->distinct()->orderSeason()->get()
+        $seasons = $user->tracks()->select('season')->distinct()->orderBy('season', 'desc')->get()
             ->pluck('season', 'season')->all();
 
         $tracks = $user->tracks()->filterTracks($filters)
