@@ -28,6 +28,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        /** @var \App\Models\Track $user */
+        $user = Auth::user();
+        $user->last_login = now();
+        $user->save();
+
         return redirect()->intended(route('track.index', absolute: false));
     }
 
