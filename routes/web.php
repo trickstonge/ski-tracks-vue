@@ -10,7 +10,7 @@ Route::match(['get', 'post'], '/',
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('track', TrackController::class)->except(['index', 'edit', 'update']);
-    Route::get('map', [TrackController::class, 'map'])->name('track.map');
+    Route::match(['get', 'post'], 'map', [TrackController::class, 'map'])->name('track.map');
 });
 
 Route::middleware('auth')->group(function () {

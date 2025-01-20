@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-card>
-        <p class="mb-4">This website allows you search and filter your ski days from the Ski Tracks mobile app. Ski tracks must first be exported from your phone, and then uploaded here. Instructions to do so are further down on this page.</p>
+        <p class="mb-4">This website allows you to search and filter your ski days from the Ski Tracks mobile app. Ski tracks must first be exported from your phone, and then uploaded here. Instructions to do so are further down on this page.</p>
 
         @guest
             <p class="mb-4 font-semibold">To get started, <a href="{{ route('login') }}" class="underline">log in</a> or <a href="{{ route('register') }}" class="underline">register</a> for an account.</p>

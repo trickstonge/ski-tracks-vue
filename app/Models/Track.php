@@ -69,6 +69,8 @@ class Track extends Model
             $query->where('start', '>=', $since);
         })->when($filters['activity'] ?? null, function ($query, $activity) {
             $query->where('activity', $activity);
+        })->when($filters['season'] ?? null, function ($query, $season) {
+            $query->where('season', $season);
         });
     }
     

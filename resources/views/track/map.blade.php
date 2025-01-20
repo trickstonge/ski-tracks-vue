@@ -69,13 +69,35 @@
     		map.fitBounds(bounds);
 		}
 
-		initMap();
+		if (tracks.length)
+		{ initMap(); }
 
 	</script>
 
 	<x-card>
+		<form method="POST" action="{{ route('track.map') }}" class="flex mb-8 gap-5 md:block">
+			@csrf
+			<div class="grow md:mt-4">
+				<x-input-label for="activity" value="Activity" />
+				<x-select name="activity" :options="App\Models\Track::$activities" all />
+			</div>
 
-		<div id="map" style="height: 60vh"></div>
+			<div class="grow md:mt-4">
+				<x-input-label for="season" value="Season" />
+				<x-select name="season" :options="$seasons" all />
+			</div>
+
+			<div class="pt-7">
+				<x-primary-button>
+					Filter
+				</x-primary-button>
+			</div>
+		</form>
+		@if($tracks->isNotEmpty())
+			<div id="map" style="height: 60vh"></div>
+		@else
+			<p>No tracks match the selected filters.</p>
+		@endif
 
 	</x-card>
 </x-app-layout>

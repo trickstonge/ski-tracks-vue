@@ -149,12 +149,20 @@ class TrackController extends Controller
     {
         Gate::authorize('viewMap', Track::class);
 
+        $filters = request()->only(['activity', 'season']);
+
         /** @var \App\Models\Track $user */
         $user = Auth::user();
-        $tracks = $user->tracks()->select('name','description','activity','latitude','longitude')->get();
+
+        $seasons = $user->tracks()->select('season')->distinct()->orderSeason()->get()
+            ->pluck('season', 'season')->all();
+
+        $tracks = $user->tracks()->filterTracks($filters)
+            ->select('name','description','activity','latitude','longitude')->get();
 
         return view('track.map', [
-            'tracks' => $tracks
+            'tracks' => $tracks,
+            'seasons' => $seasons
         ]);
     }
 }
