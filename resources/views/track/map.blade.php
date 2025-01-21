@@ -28,15 +28,15 @@
 			tracks.forEach(track => {
 				//define svg icons.
 				const skiingSvg = parser.parseFromString(
-				`<x-fas-person-skiing class="fill-sky-800" />`,
+				`<x-fas-person-skiing class="fill-sky-800 w-full h-full" />`,
 				"image/svg+xml",
 				).documentElement;
 				const touringSvg = parser.parseFromString(
-				`<x-ski-touring-icon class="fill-sky-800" />`,
+				`<x-ski-touring-icon class="fill-sky-800 w-full h-full" />`,
 				"image/svg+xml",
 				).documentElement;
 				const xcSvg = parser.parseFromString(
-				`<x-fas-skiing-nordic class="fill-sky-800" />`,
+				`<x-fas-skiing-nordic class="fill-sky-800 w-full h-full" />`,
 				"image/svg+xml",
 				).documentElement;
 				
@@ -60,7 +60,7 @@
 				bounds.extend(marker.position);
 
 				//event listener for marker info window
-				marker.addListener("click", () => {
+				marker.addListener("gmp-click", () => {
 					infoWindow.setContent(track.name + ",<br>" + track.description);
 					infoWindow.open(map, marker);
 				});
