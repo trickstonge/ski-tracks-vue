@@ -95,7 +95,7 @@ class TrackController extends Controller
         foreach ($files as $file)
         {
             $skizPath = $file->store('skiz', 'local');
-            // Convert .skiz file to .json file
+            // Convert .skiz file to .json file with node.js script
             $command = "node ../resources/js/skiz-json.js ../storage/app/private/$skizPath";
             //exec appends each itiration to $paths
             exec($command, $paths);
@@ -154,7 +154,9 @@ class TrackController extends Controller
         /** @var \App\Models\Track $user */
         $user = Auth::user();
 
+        //get seasons for the dropdown
         $seasons = $user->tracks()->select('season')->distinct()->orderBy('season', 'desc')->get()
+            //pluck gets the values of the season, used twice to get a key and value
             ->pluck('season', 'season')->all();
 
         $tracks = $user->tracks()->filterTracks($filters)

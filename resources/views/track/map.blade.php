@@ -9,6 +9,7 @@
 		  v: "beta",
 		});
 
+		//converts json to js object
 		let tracks = {{ Js::from($tracks) }};
 		let map;
 

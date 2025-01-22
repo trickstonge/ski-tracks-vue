@@ -38,6 +38,7 @@ class Track extends Model
         'x-country' => 'fas-skiing-nordic'
     ];
 
+    //start time needs to be cast for date formatting to work
     protected $casts = [
         'start' => 'datetime'
     ];
@@ -52,7 +53,7 @@ class Track extends Model
         return $this->hasOne(TrackMetric::class);
     }
 
-    //add an attribute for formated duration. Called an accessor
+    //add an attribute for formated duration, used as duration_formated. Called an accessor
     protected function durationFormated(): Attribute
     {
         return Attribute::make(
@@ -83,37 +84,9 @@ class Track extends Model
     public function scopeFirstTrack(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
     {
         return $query->where('description', 'like', '%' . $filters['description'] . '%')
-            //need to filter by actvity, otherwise the match may not be returned if the description search was found in a different activity
+            //need to filter by actvity, otherwise the correct match may not be returned if the description search was found in a different activity
             ->where('activity', $filters['activity'])
             ->orderBy('start', 'asc');
-    }
-    
-    //calculate totals for all seasons
-    public static function grandTotals($tracks)
-    {
-        $seasons = $tracks->pluck('totals');
-        $totals = [];
-
-        $seasons->each(function($season) use (&$totals)
-        {
-            foreach ($season as $key => $value)
-            {
-                if ($key == 'activities')
-                {
-                    foreach ($value as $activity => $count)
-                    {
-                        $totals['activities'][$activity] = ($totals['activities'][$activity] ?? 0) + $count;
-                    }
-                }
-                else
-                {
-                    $totals[$key] = ($totals[$key] ?? 0) + $value;
-                }
-            }
-        });
-        
-        return $totals;
-
     }
 
     public static function seasonTotals($tracks)
@@ -162,7 +135,7 @@ class Track extends Model
             return $totals;
         });
 
-        //get keys to use with map
+        //get keys to use with mapWithKeys
         $seasons = $tracks->keys();
         //zip combines the two collections (tracks and seasonTotals) into one, then mapWithKeys creates a new collection with the season keys
         return $tracks->zip($seasonTotals)->mapWithKeys(function ($item, $key) use ($seasons) {
@@ -172,6 +145,34 @@ class Track extends Model
             });
             return [$seasons[$key] => $item];
         });
+    }
+    
+    //calculate totals for all seasons
+    public static function grandTotals($tracks)
+    {
+        $seasons = $tracks->pluck('totals');
+        $totals = [];
+
+        $seasons->each(function($season) use (&$totals)
+        {
+            foreach ($season as $key => $value)
+            {
+                if ($key == 'activities')
+                {
+                    foreach ($value as $activity => $count)
+                    {
+                        $totals['activities'][$activity] = ($totals['activities'][$activity] ?? 0) + $count;
+                    }
+                }
+                else
+                {
+                    $totals[$key] = ($totals[$key] ?? 0) + $value;
+                }
+            }
+        });
+        
+        return $totals;
+
     }
 
     //process the json track file when uploaded
