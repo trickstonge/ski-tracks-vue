@@ -167,4 +167,21 @@ class TrackController extends Controller
             'seasons' => $seasons
         ]);
     }
+
+    public function chart()
+    {
+        Gate::authorize('viewMap', Track::class);
+
+        /** @var \App\Models\Track $user */
+        $user = Auth::user();
+
+        $tracks = $user->tracks()
+            ->select('season','name','start')->orderBy('start')->get();
+
+        $tracks = Track::chart($tracks);
+
+        return view('track.chart', [
+            'tracks' => $tracks
+        ]);
+    }
 }

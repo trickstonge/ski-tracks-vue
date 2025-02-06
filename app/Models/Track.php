@@ -175,6 +175,26 @@ class Track extends Model
 
     }
 
+    public static function chart($tracks)
+    {
+        $tracks = $tracks->groupBy('season');
+        $tracks->each(function($season)
+        {
+            $season->transform(function($track)
+            {
+                //change name to only have the number
+                $track['name'] = preg_replace('/ \- \d{4}\/\d{4}/', '', $track['name']);
+                $track['name'] = str_replace('Day ', '', $track['name']);
+                //add date that does not have year
+                $date = $track['start'];
+                $track['date'] = $date->month . '/' . $date->day;
+                return $track;
+            });
+        });
+
+        return $tracks;
+    }
+
     //process the json track file when uploaded
     public static function processTrack($file, $user)
     {
