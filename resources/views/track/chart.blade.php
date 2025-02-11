@@ -4,7 +4,9 @@
 	</x-slot>
 
 	<x-card>
-		<canvas id="chart"></canvas>
+        <div class="h-[70vh]">
+    		<canvas id="chart"></canvas>
+        </div>
 	</x-card>
 
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -49,6 +51,7 @@
         },
         options: {
 			spanGaps: true,
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     title: {
