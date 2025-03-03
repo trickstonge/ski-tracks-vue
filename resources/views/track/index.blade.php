@@ -38,11 +38,17 @@
             <x-card class="mb-8">
                 <h2 class="text-2xl text-gray-800 font-semibold">All Seasons</h2>
                 <x-totals :totals="$totals" class="mt-6" />
+                <h3 class="text-xl text-gray-800 mt-6 sm:text-center">Jump to Season</h3>
+                <div class="flex flex-wrap gap-y-2 sm:text-center">
+                    @foreach ($tracks as $season)
+                        <a href="#{{ str_replace('/', '-', $season['tracks']->first()->season) }}" class="underline w-1/6 md:w-1/4 sm:w-1/2">{{ $season['tracks']->first()->season }}</a>
+                    @endforeach
+                </div>
             </x-card>
         @endif
         
         @forelse ($tracks as $season)
-            <x-card class="mb-8">
+            <x-card class="mb-8" id="{{ str_replace('/', '-', $season['tracks']->first()->season) }}">
                 <h2 class="text-2xl text-gray-800 font-semibold">{{ $season['tracks']->first()->season }}</h2>
                 <x-totals :totals="$season['totals']" class="my-6" />
 
