@@ -9,12 +9,13 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { ZiggyVue } from 'ziggy-js';
 import MainLayout from '@/Layouts/MainLayout.vue'
 
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
 import { faPersonSkiing, faSkiingNordic } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faSnowflake, faPersonSkiing, faSkiingNordic);
+config.autoAddCss = false;
 
 if (document.getElementById('app')) {
 	createInertiaApp({

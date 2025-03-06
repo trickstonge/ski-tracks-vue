@@ -4,7 +4,7 @@
 
 <div class="relative">
 	{{-- x-ref, @click, and $refs is all from alpine JS --}}
-	<input @disabled($disabled) {{ $attributes->merge(['class' => 'block mt-1 w-full border-gray-300 focus:border-sky-600 focus:ring-sky-600 rounded-md shadow-sm']) }} name="{{ $name }}" x-ref="input-{{ $name }}" />
+	<input @disabled($disabled) {{ $attributes->merge(['class' => 'block mt-1 w-full border-gray-300 focus:border-sky-600 focus:ring-sky-600 rounded-md shadow-xs']) }} name="{{ $name }}" x-ref="input-{{ $name }}" />
 	@if($close)
 		{{-- x-show displays if we have discription --}}
 		<button x-show=

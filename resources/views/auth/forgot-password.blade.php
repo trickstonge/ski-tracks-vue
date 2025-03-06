@@ -17,7 +17,7 @@
         </div>
 
         <div class="flex items-center justify-between mt-4 gap-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600" href="{{ route('login') }}">Back to Login Page</a>
+            <a class="underline text-sm text-gray-600 hover:text-gray-800 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-sky-600" href="{{ route('login') }}">Back to Login Page</a>
 
             <x-primary-button>
                 {{ __('Email Password Reset') }}
