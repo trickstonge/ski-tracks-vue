@@ -1,1 +1,0 @@
-<x-far-snowflake {{ $attributes }} />

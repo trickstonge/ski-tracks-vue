@@ -63,7 +63,8 @@ class TrackController extends Controller
             $totals = Track::grandTotals($tracks);
         }
 
-        return view('track.index', [
+        return inertia('Track/Index', [
+        // return view('track.index', [
             'tracks' => $tracks ?? null,
             'totals' => $totals ?? null,
             'firstTrackID' => $firstTrack->id ?? null,

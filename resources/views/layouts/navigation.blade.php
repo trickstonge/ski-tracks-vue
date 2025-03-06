@@ -1,3 +1,4 @@
+{{-- to delete --}}
 {{-- Nav items are in app/Providers/AppServiceProviders.php, so they're loaded on every view --}}
 
 <nav x-data="{ open: false }" class="bg-sky-800">
