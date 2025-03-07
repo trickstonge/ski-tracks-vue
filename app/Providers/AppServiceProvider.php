@@ -21,25 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //define nav items based on auth status
-        View::composer('*', function ($view) {
-            if (Auth::check())
-            {
-                $view->with('nav', [
-                    'Tracks' => 'track.index',
-                    'Map' => 'track.map',
-                    'Days Chart' => 'track.chart',
-                    'Upload Tracks' => 'track.create',
-                    'About' => 'about',
-                ]);
-            }
-            else
-            {
-                $view->with('nav', [
-                    'Register' => 'register',
-                    'Login' => 'login',
-                ]);
-            }
-        });
+        //
     }
 }

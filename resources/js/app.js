@@ -7,6 +7,7 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { ZiggyVue } from 'ziggy-js';
+import ClickOutside from '@/Directives/ClickOutside';
 import MainLayout from '@/Layouts/MainLayout.vue'
 
 import { library, config } from '@fortawesome/fontawesome-svg-core';
@@ -32,6 +33,7 @@ if (document.getElementById('app')) {
 				.component('font-awesome-icon', FontAwesomeIcon)
 				.use(plugin)
 				.use(ZiggyVue)
+				.directive('click-outside', ClickOutside)
 				.mount(el)
 		},
 	})

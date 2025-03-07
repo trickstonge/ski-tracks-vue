@@ -1,3 +1,4 @@
+{{-- to delete --}}
 @props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1'])
 
 @php
