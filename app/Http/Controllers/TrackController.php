@@ -18,7 +18,7 @@ class TrackController extends Controller
         Gate::authorize('viewAny', Track::class);
 
         if (Auth::guest())
-        { return view('track.index'); }
+        { return inertia('About/Index'); }
 
         //activity is required if filterType is since
         $validator = Validator::make(request()->all(), [
