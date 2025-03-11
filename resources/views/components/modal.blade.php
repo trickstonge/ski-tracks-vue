@@ -1,3 +1,4 @@
+{{-- to delete --}}
 @props([
     'name',
     'show' => false,
