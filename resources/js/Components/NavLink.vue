@@ -23,7 +23,7 @@ const user = computed(
 const linkTag = user.value ? Link : 'a';
 
 const isActive = ref(route().current() == props.routeName);
-//watcher to make current route reactive, so correct nav item can be highhlited when changing page
+//watcher to make current route reactive, so correct nav item can be highlited when changing page
 watch(() => page.props.nav, () => {
 	isActive.value = route().current() == props.routeName;
 });

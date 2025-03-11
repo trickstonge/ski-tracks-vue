@@ -15,11 +15,11 @@
 
                 <!-- Navigation Links -->
                 <div class="sm:hidden space-x-8 ms-10 flex">
-                    @foreach ($nav as $text => $route)
+                    {{-- @foreach ($nav as $text => $route)
                         <x-nav-link :href="route($route)" :active="request()->routeIs($route)">
                             {{ $text }}
                         </x-nav-link>
-                    @endforeach
+                    @endforeach --}}
                 </div>
             </div>
 
@@ -74,11 +74,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @foreach ($nav as $text => $route)
+            {{-- @foreach ($nav as $text => $route)
                 <x-responsive-nav-link :href="route($route)" :active="request()->routeIs($route)">
                     {{ $text }}
                 </x-responsive-nav-link>
-            @endforeach
+            @endforeach --}}
         </div>
 
         @auth

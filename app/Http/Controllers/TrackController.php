@@ -7,6 +7,7 @@ use App\Models\Track;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class TrackController extends Controller
 {
@@ -18,7 +19,11 @@ class TrackController extends Controller
         Gate::authorize('viewAny', Track::class);
 
         if (Auth::guest())
-        { return inertia('About/Index'); }
+        { 
+            Inertia::share('pageTitle', 'About');
+            
+            return inertia('About/Index');
+        }
 
         //activity is required if filterType is since
         $validator = Validator::make(request()->all(), [
@@ -62,6 +67,8 @@ class TrackController extends Controller
             $tracks = Track::seasonTotals($tracks);
             $totals = Track::grandTotals($tracks);
         }
+
+        Inertia::share('pageTitle', 'Ski Tracks');
 
         return inertia('Track/Index', [
         // return view('track.index', [

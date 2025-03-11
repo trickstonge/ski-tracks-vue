@@ -34,8 +34,7 @@ import Card from '@/Components/Card.vue';
 
 const page = usePage();
 
-const pageTitle = 'About';
-page.props.pageTitle = pageTitle;
+const pageTitle = page.props.pageTitle;
 
 
 const user = computed(

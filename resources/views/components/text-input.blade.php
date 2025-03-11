@@ -1,3 +1,4 @@
+{{-- to delete? --}}
 @props(['disabled' => false, 'name' => '', 'close' => false])
 
 {{-- even though we use $attributes->merge to add the incoing attributes, because name is used above as a laravel variable, it has to be added in the html again. Otherwise it's only read as a variable and not printed. --}}

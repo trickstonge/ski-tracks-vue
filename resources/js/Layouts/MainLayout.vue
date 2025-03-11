@@ -87,10 +87,10 @@
   </nav>
 
   <!-- Page Heading -->
-  <header v-if="pageTitle" class="bg-white shadow">
+  <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-8 md:px-6 sm:px-4">
       <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ pageTitle }}
+        {{ $page.props.pageTitle }}
       </h1>
     </div>
   </header>
@@ -99,7 +99,7 @@
   <main>
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
-        <div class="font-medium text-green-700">flash {{ success }}</div>
+        <div class="font-medium text-green-700 mb-2">{{ $page.props.success }}</div>
         <slot />
       </div>
     </div>
@@ -122,9 +122,9 @@ defineProps({
 const page = usePage();
 //computed automatically updates when the dependencies change
 //flash message defined in HandleInertiaRequests.php for props that are shared. usePage above allows reading from that file.
-const success = computed(
-	() => page.props.success,
-)
+// const success = computed(
+// 	() => page.props.success,
+// )
 
 //usePage also allows to read the user data
 const user = computed(
@@ -132,9 +132,9 @@ const user = computed(
 );
 
 //usePage for page title/h1 at top
-const pageTitle = computed(
-	() => page.props.pageTitle,
-);
+// const pageTitle = computed(
+// 	() => page.props.pageTitle,
+// );
 
 
 //state to toggle dropdown visibility
