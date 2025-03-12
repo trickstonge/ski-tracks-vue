@@ -5,11 +5,11 @@ import ClickOutside from '@/Directives/ClickOutside';
 import MainLayout from '@/Layouts/MainLayout.vue'
 
 import { library, config } from '@fortawesome/fontawesome-svg-core';
-import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
-import { faPersonSkiing, faSkiingNordic } from '@fortawesome/free-solid-svg-icons';
+import { faSnowflake, faClock } from '@fortawesome/free-regular-svg-icons';
+import { faPersonSkiing, faSkiingNordic, faArrowDownLong, faArrowRightLong, faCalendarDays, faMountainSun, faArrowTrendDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faSnowflake, faPersonSkiing, faSkiingNordic);
+library.add(faSnowflake, faPersonSkiing, faSkiingNordic, faArrowDownLong, faArrowRightLong, faCalendarDays, faMountainSun, faArrowTrendDown, faClock);
 config.autoAddCss = false;
 
 if (document.getElementById('app')) {

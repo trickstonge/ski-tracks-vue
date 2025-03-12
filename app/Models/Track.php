@@ -31,13 +31,6 @@ class Track extends Model
         'x-country' => 'Cross Country'
     ];
 
-    public static array $icons =
-    [
-        'skiing' => 'fas-person-skiing', 
-        'ski-touring' => 'ski-touring-icon', 
-        'x-country' => 'fas-skiing-nordic'
-    ];
-
     //start time needs to be cast for date formatting to work
     protected $casts = [
         'start' => 'datetime'
@@ -51,14 +44,6 @@ class Track extends Model
     public function metrics()
     {
         return $this->hasOne(TrackMetric::class);
-    }
-
-    //add an attribute for formated duration, used as duration_formated. Called an accessor
-    protected function durationFormated(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->duration > 3600 ? date('g:i', $this->duration) : date('i', $this->duration),
-        );
     }
     
     //filters for search form

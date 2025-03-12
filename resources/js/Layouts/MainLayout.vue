@@ -11,8 +11,6 @@
             <Link :href="route('track.index')">
               <font-awesome-icon class="block h-9 w-auto fill-current text-sky-100" :icon="['far', 'snowflake']" />
             </Link>
-            <font-awesome-icon class="block h-9 w-auto fill-current text-sky-100" icon="person-skiing" />
-            <font-awesome-icon class="block h-9 w-auto fill-current text-sky-100" icon="skiing-nordic" />
           </div>
           <!-- Navigation Links -->
           <div class="sm:hidden space-x-8 ms-10 flex">

@@ -71,7 +71,6 @@ class TrackController extends Controller
         Inertia::share('pageTitle', 'Ski Tracks');
 
         return inertia('Track/Index', [
-        // return view('track.index', [
             'tracks' => $tracks ?? null,
             'totals' => $totals ?? null,
             'firstTrackID' => $firstTrack->id ?? null,
@@ -135,8 +134,10 @@ class TrackController extends Controller
     {
         Gate::authorize('view', $track);
 
-        return view('track.show', [
-            'track' => $track
+        Inertia::share('pageTitle', $track->name);
+
+        return inertia('Track/Show', [
+            'track' => $track->load('metrics')
         ]);
     }
 
