@@ -86,7 +86,9 @@ class TrackController extends Controller
     {
         Gate::authorize('create', Track::class);
 
-        return view('track.create');
+        Inertia::share('pageTitle', 'Upload Tracks');
+
+        return inertia('Track/Create');
     }
 
     /**
