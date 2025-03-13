@@ -1,3 +1,4 @@
+{{-- to delete --}}
 @props(['name' => '', 'options' => null, 'all' => false])
 
 <select {{ $attributes->merge(['class' => 'block mt-1 w-full border-gray-300 focus:border-sky-600 focus:ring-sky-600 disabled:text-gray-400 rounded-md shadow-xs']) }} id="{{ $name }}" name="{{ $name }}">

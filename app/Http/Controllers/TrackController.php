@@ -30,7 +30,7 @@ class TrackController extends Controller
             'activity' => 'required_if:filterType,since',
         ]);
         if ($validator->fails()) {
-            return redirect()->route('track.index')
+            return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -74,7 +74,8 @@ class TrackController extends Controller
             'tracks' => $tracks ?? null,
             'totals' => $totals ?? null,
             'firstTrackID' => $firstTrack->id ?? null,
-            'noTracks' => $noTracks ?? false
+            'noTracks' => $noTracks ?? false,
+            'activities' => Track::$activities
         ]);
     }
 
