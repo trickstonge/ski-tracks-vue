@@ -195,7 +195,9 @@ class TrackController extends Controller
 
         $tracks = Track::chart($tracks);
 
-        return view('track.chart', [
+        Inertia::share('pageTitle', 'Days Chart');
+
+        return inertia('Track/Chart', [
             'tracks' => $tracks
         ]);
     }
