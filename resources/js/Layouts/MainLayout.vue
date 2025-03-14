@@ -43,7 +43,7 @@
             >
               <div v-show="open" class="absolute z-50 mt-2 w-48 rounded-md shadow-lg ltr:origin-top-right rtl:origin-top-left end-0">
                 <div class="rounded-md bg-sky-800 py-1">
-                  <DropdownLink route-name="profile.edit" label="Profile" />
+                  <DropdownLink route-name="profile.edit" label="Profile" @click="open = !open" />
                   <DropdownLink route-name="logout" label="Logout" method="post" />
                 </div>
               </div>

@@ -26,6 +26,7 @@
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@fortawesome/vue-fontawesome": "^3.0.8",
         "@inertiajs/vue3": "^2.0.4",
-        "skiz-parser": "^5.0.1"
+        "skiz-parser": "^5.0.1",
+        "vue3-google-map": "^0.21.1"
     }
 }

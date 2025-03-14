@@ -172,11 +172,14 @@ class TrackController extends Controller
             ->pluck('season', 'season')->all();
 
         $tracks = $user->tracks()->filterTracks($filters)
-            ->select('name','description','activity','latitude','longitude')->get();
+            ->select('id','name','description','activity','latitude','longitude')->get();
 
-        return view('track.map', [
+        Inertia::share('pageTitle', 'Map');
+
+        return inertia('Track/Map', [
             'tracks' => $tracks,
-            'seasons' => $seasons
+            'seasons' => $seasons,
+            'activities' => Track::$activities
         ]);
     }
 
