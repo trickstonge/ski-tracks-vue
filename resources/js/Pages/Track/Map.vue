@@ -22,7 +22,7 @@
 		
     <GoogleMap
       v-if="tracks.length !== 0" ref="mapRef"
-      api-key="AIzaSyA9x7cjOvUtJ9Tq8nUKJE5laIerQ4DhhXs"
+      :api-key="GOOGLE_MAPS_API_KEY"
       map-id="ab8c626e70aa41c5"
       style="width: 100%; height: 60vh"
       :center="{ lat: 40, lng: -100 }"
@@ -53,6 +53,7 @@ import Select from '@/Components/Select.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const page = usePage();
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
 const pageTitle = page.props.pageTitle;
 
