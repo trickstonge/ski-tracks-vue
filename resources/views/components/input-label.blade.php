@@ -1,4 +1,3 @@
-{{-- to delete? --}}
 @props(['value'])
 
 <label {{ $attributes->merge(['class' => 'block font-medium text-gray-700']) }}>

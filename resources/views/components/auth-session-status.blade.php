@@ -1,4 +1,3 @@
-{{-- to delete? --}}
 @props(['status'])
 
 @if ($status)
