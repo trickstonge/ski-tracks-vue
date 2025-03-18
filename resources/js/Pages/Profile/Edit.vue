@@ -5,16 +5,16 @@
     <div class="max-w-xl">
       <section>
         <header>
-          <h1 class="text-lg font-medium text-gray-800">
+          <h2 class="text-lg font-medium text-gray-800">
             Profile Information
-          </h1>
+          </h2>
 
           <p class="mt-1 text-sm text-gray-600">
             Update your account's profile information and email address.
           </p>
         </header>
 
-        <form class="mt-6 space-y-6" @submit.prevent="profileForm.patch(route('profile.update'))">
+        <form class="mt-6 space-y-6" @submit.prevent="submitProfile">
           <div>
             <InputLabel for="name" value="Name" />
             <TextInput id="name" v-model="profileForm.name" name="name" type="text" required autofocus autocomplete="name" />
@@ -63,16 +63,16 @@
     <div class="max-w-xl">
       <section>
         <header>
-          <h1 class="text-lg font-medium text-gray-800">
+          <h2 class="text-lg font-medium text-gray-800">
             Update Password
-          </h1>
+          </h2>
 
           <p class="mt-1 text-sm text-gray-600">
             Ensure your account is using a long, random password to stay secure.
           </p>
         </header>
 
-        <form class="mt-6 space-y-6" @submit.prevent="passwordForm.put(route('password.update'))">
+        <form class="mt-6 space-y-6" @submit.prevent="submitPassword">
           <div>
             <InputLabel for="update_password_current_password" value="Current Password" />
             <TextInput id="update_password_current_password" v-model="passwordForm.current_password" name="current_password" type="password" autocomplete="current-password" />
@@ -103,9 +103,9 @@
     <div class="max-w-xl">
       <section class="space-y-6">
         <header>
-          <h1 class="text-lg font-medium text-gray-800">
+          <h2 class="text-lg font-medium text-gray-800">
             Delete Account
-          </h1>
+          </h2>
 
           <p class="mt-1 text-sm text-gray-600">
             Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
@@ -117,7 +117,7 @@
         </DangerButton>
 
         <Modal :show="showModal" @close="showModal = false">
-          <form class="p-6" @submit.prevent="deleteForm.delete(route('profile.destroy'))">
+          <form class="p-6" @submit.prevent="submitDelete">
             <h2 class="text-lg font-medium text-gray-800">
               Are you sure you want to delete your account?
             </h2>
@@ -185,6 +185,25 @@ const passwordForm = useForm({
 const deleteForm = useForm({
 	password: '',
 });
+
+const submitProfile = () => {
+	profileForm.patch(route('profile.update'));
+}
+
+const submitPassword = () => {
+	passwordForm.put(route('password.update'), {
+		preserveScroll: 'errors',
+		onSuccess: () => {
+			passwordForm.reset();
+		},
+	});
+}
+
+const submitDelete = () => {
+	deleteForm.delete(route('profile.destroy'), {
+		preserveScroll: 'errors',
+	});
+}
 
 const showModal = ref(false);
 </script>

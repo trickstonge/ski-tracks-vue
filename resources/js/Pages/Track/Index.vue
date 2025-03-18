@@ -3,7 +3,7 @@
     <form class="flex gap-5 md:block" @submit.prevent="filter">
       <div class="grow">
         <InputLabel for="description" value="Description Search" />
-        <TextInput id="description" v-model="form.description" name="description" type="text" close />
+        <TextInput id="description" v-model="form.description" name="description" type="text" close @reset-form="resetForm" />
       </div>
 
       <div class="grow md:mt-4">
@@ -69,11 +69,18 @@ defineProps({
 	activities: Object,
 })
 
-const form = useForm({
+const initialFormValues = {
 	description: '',
 	filterType: 'normal',
 	activity: '',
-})
+};
+const form = useForm(initialFormValues)
+
+const resetForm = () => {
+	form.defaults(initialFormValues)
+	form.reset();
+	filter();
+}
 
 const filter = () => {
 	if(!form.activity && form.filterType === 'since')
