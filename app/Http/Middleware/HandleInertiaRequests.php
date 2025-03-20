@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
@@ -56,12 +57,16 @@ class HandleInertiaRequests extends Middleware
         
         //"global" variables read by usePage in MainLayout.vue
         return array_merge(parent::share($request), [
-            'success' => $request->session()->get('success'),
+            //Toast messages. Create array with only the 4 allowed values, then create a collection so...
+            'message' => collect(Arr::only($request->session()->all(), ['success','warning','error', 'info']))
+                //...mapWithKeys can transform it with defined keys, instead of 'success' => 'message'
+                ->mapWithKeys(fn ($body, $type) => ['type' => $type, 'body' => $body]),
             'nav' => $nav,
             'user' => $request->user() ? [
                 'id' => $request->user()->id,
                 'name' => $request->user()->name,
                 'email' => $request->user()->email,
+                'verified' => $request->user()->email_verified_at != null ? true : false,
                 'units' => Auth::user()->units
             ] : null
         ]);

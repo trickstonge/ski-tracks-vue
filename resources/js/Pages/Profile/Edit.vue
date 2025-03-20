@@ -187,12 +187,14 @@ const deleteForm = useForm({
 });
 
 const submitProfile = () => {
-	profileForm.patch(route('profile.update'));
+	profileForm.patch(route('profile.update'), {
+		preserveScroll: true,
+	});
 }
 
 const submitPassword = () => {
 	passwordForm.put(route('password.update'), {
-		preserveScroll: 'errors',
+		preserveScroll: true,
 		onSuccess: () => {
 			passwordForm.reset();
 		},

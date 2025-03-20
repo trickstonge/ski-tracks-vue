@@ -97,7 +97,6 @@
   <main>
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
-        <div class="font-medium text-green-700 mb-2">{{ page.props.success }}</div>
         <slot />
       </div>
     </div>

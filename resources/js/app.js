@@ -2,6 +2,9 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { ZiggyVue } from 'ziggy-js';
 import ClickOutside from '@/Directives/ClickOutside';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css'
+import { notifications } from '@/Plugins/notifications';
 import MainLayout from '@/Layouts/MainLayout.vue'
 
 import { library, config } from '@fortawesome/fontawesome-svg-core';
@@ -11,6 +14,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faSnowflake, faPersonSkiing, faSkiingNordic, faArrowDownLong, faArrowRightLong, faCalendarDays, faMountainSun, faArrowTrendDown, faClock);
 config.autoAddCss = false;
+
+const toastOptions = {
+	position: 'bottom-left',
+	hideProgressBar: true,
+}
 
 if (document.getElementById('app')) {
 	createInertiaApp({
@@ -27,6 +35,8 @@ if (document.getElementById('app')) {
 				.component('font-awesome-icon', FontAwesomeIcon)
 				.use(plugin)
 				.use(ZiggyVue)
+				.use(Toast, toastOptions)
+				.use(notifications)
 				.directive('click-outside', ClickOutside)
 				.mount(el)
 		},

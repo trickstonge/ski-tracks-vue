@@ -20,7 +20,7 @@ const user = computed(
 );
 
 //use inertia Link for nav when logged in, normal anchor when not since auth pages still used blade templates.
-const linkTag = user.value ? Link : 'a';
+const linkTag = user.value?.verified ? Link : 'a';
 
 const isActive = ref(route().current() == props.routeName);
 //watcher to make current route reactive, so correct nav item can be highlited when changing page
