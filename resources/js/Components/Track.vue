@@ -1,30 +1,32 @@
 <template>
   <div>
     <div class="grid grid-cols-12 gap-x-3 items-center text-lg">
-      <ActivityIcon :icon="icons[track.activity]" />
+      <div class="md:col-span-1 col-span-6">
+        <ActivityIcon :icon="icons[track.activity]" class="ml-auto md:m-0" />
+      </div>
       
-      <div class="col-span-3 md:col-span-4 sm:col-span-6 sm:order-first">
+      <div class="md:col-span-3 col-span-6 md:order-none order-first">
         <!-- if we're on the track.show view, don't print the link -->
         <p v-if="route().current() == 'track.show' ">{{ track.name }}</p>
         <Link v-else :href="route('track.show', track.id)" class="underline">{{ track.name }}</Link>
       </div>
-      <div class="col-span-5 md:col-span-7 sm:col-span-12">{{ track.description }}</div>
-      <div class="col-span-2 md:col-span-6">{{ new Date(track.start).toLocaleString('en-US', dateOptions) }}</div>
-      <div class="col-span-1 md:col-span-6 text-right">{{ durationFormatted }}</div>
+      <div class="md:col-span-5 col-span-12">{{ track.description }}</div>
+      <div class="md:col-span-2 col-span-6">{{ new Date(track.start).toLocaleString('en-US', dateOptions) }}</div>
+      <div class="md:col-span-1 col-span-6 text-right">{{ durationFormatted }}</div>
     </div>
-    <div v-if="track.activity == 'x-country'" class="grid grid-cols-12 gap-x-3 items-center mt-4 text-gray-600 sm:block">
-      <div class="col-span-1 lg:hidden" />
-      <div class="col-span-3 lg:col-span-6">Avg Speed: {{ track.metrics.average_speed }} {{ user.units.speed }}</div>
-      <div class="col-span-3 lg:col-span-6">Max Speed: {{ track.metrics.max_speed }} {{ user.units.speed }}</div>
-      <div class="col-span-2 lg:col-span-6">Vertical: {{ track.metrics.total_descent }} {{ user.units.vertical }}</div>
-      <div class="col-span-3 lg:col-span-6">Distance: {{ track.metrics.distance }} {{ user.units.distance }}</div>
+    <div v-if="track.activity == 'x-country'" class="sm:grid grid-cols-12 gap-x-3 items-center mt-4 text-gray-600 block">
+      <div class="col-span-1 md:block hidden" />
+      <div class="md:col-span-3 col-span-6">Avg Speed: {{ track.metrics.average_speed }} {{ user.units.speed }}</div>
+      <div class="md:col-span-3 col-span-6">Max Speed: {{ track.metrics.max_speed }} {{ user.units.speed }}</div>
+      <div class="md:col-span-2 col-span-6">Vertical: {{ track.metrics.total_descent }} {{ user.units.vertical }}</div>
+      <div class="md:col-span-3 col-span-6">Distance: {{ track.metrics.distance }} {{ user.units.distance }}</div>
     </div>
-    <div v-else class="grid grid-cols-12 gap-x-3 items-center mt-4 text-gray-600 sm:block">
-      <div class="col-span-1 lg:col-span-6">{{ track.metrics.descents }} {{ track.metrics.descents === 1 ? 'Run' : 'Runs' }} </div>
-      <div class="col-span-3 lg:col-span-6">Avg Descent Speed: {{ track.metrics.average_descent_speed }} {{ user.units.speed }}</div>
-      <div class="col-span-3 lg:col-span-6">Max Speed: {{ track.metrics.max_speed }} {{ user.units.speed }}</div>
-      <div class="col-span-2 lg:col-span-6">Vertical: {{ track.metrics.total_descent }} {{ user.units.vertical }}</div>
-      <div class="col-span-3 lg:col-span-6">Ski Distance: {{ track.metrics.descent_distance }} {{ user.units.distance }}</div>
+    <div v-else class="sm:grid grid-cols-12 gap-x-3 items-center mt-4 text-gray-600 block">
+      <div class="md:col-span-1 col-span-6">{{ track.metrics.descents }} {{ track.metrics.descents === 1 ? 'Run' : 'Runs' }} </div>
+      <div class="md:col-span-3 col-span-6">Avg Descent Speed: {{ track.metrics.average_descent_speed }} {{ user.units.speed }}</div>
+      <div class="md:col-span-3 col-span-6">Max Speed: {{ track.metrics.max_speed }} {{ user.units.speed }}</div>
+      <div class="md:col-span-2 col-span-6">Vertical: {{ track.metrics.total_descent }} {{ user.units.vertical }}</div>
+      <div class="md:col-span-3 col-span-6">Ski Distance: {{ track.metrics.descent_distance }} {{ user.units.distance }}</div>
     </div>
 
     <slot />

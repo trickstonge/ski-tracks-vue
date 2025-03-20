@@ -1,17 +1,17 @@
 <template>
   <Card class="mb-8">
-    <form class="flex gap-5 md:block" @submit.prevent="filter">
+    <form class="md:flex gap-5 block" @submit.prevent="filter">
       <div class="grow">
         <InputLabel for="description" value="Description Search" />
         <TextInput id="description" v-model="form.description" name="description" type="text" close @reset-form="resetForm" />
       </div>
 
-      <div class="grow md:mt-4">
+      <div class="grow md:mt-0 mt-4">
         <InputLabel for="filterType" value="Filter Type" />
         <Select v-model="form.filterType" name="filterType" :options="{'normal': 'Normal', 'since': 'Days Since'}" :disabled="form.description.length === 0" />
       </div>
             
-      <div class="grow md:mt-4">
+      <div class="grow md:mt-0 mt-4">
         <InputLabel for="activity" value="Activity" />
         <Select v-model="form.activity" name="activity" :options="activities" all />
         <InputError class="mt-2" :messages="[form.errors.activity]" />
@@ -28,9 +28,9 @@
   <Card v-if="totals" class="mb-8">
     <h2 class="text-2xl text-gray-800 font-semibold">All Seasons</h2>
     <Totals :totals="totals" class="mt-6" />
-    <h3 class="text-xl text-gray-800 mt-6 sm:text-center">Jump to Season</h3>
-    <div class="flex flex-wrap gap-y-2 sm:text-center">
-      <a v-for="(seasonData, season) in tracks" :key="season" :href="'#' + season.replace('/', '-')" class="underline w-1/6 md:w-1/4 sm:w-1/2">{{ season }}</a>
+    <h3 class="text-xl text-gray-800 mt-6 sm:text-left text-center">Jump to Season</h3>
+    <div class="flex flex-wrap gap-y-2 sm:text-left text-center">
+      <a v-for="(seasonData, season) in tracks" :key="season" :href="'#' + season.replace('/', '-')" class="underline md:w-1/6 sm:w-1/4 w-1/2">{{ season }}</a>
     </div>
   </Card>
 

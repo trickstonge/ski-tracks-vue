@@ -4,28 +4,12 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { ref, watch, computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { useLinkActive } from '@/Composables/useLinkActive';
 
 const props = defineProps({
 	routeName: String,
 	label: String,
 })
 
-const page = usePage();
-
-const user = computed(
-	() => page.props.user,
-);
-
-//use inertia Link for nav when logged in, normal anchor when not since auth pages still used blade templates.
-const linkTag = user.value?.verified ? Link : 'a';
-
-const isActive = ref(route().current() == props.routeName);
-//watcher to make current route reactive, so correct nav item can be highlited when changing page
-watch(() => page.props.nav, () => {
-	isActive.value = route().current() == props.routeName;
-});
-
+const { linkTag, isActive } = useLinkActive(props.routeName);
 </script>

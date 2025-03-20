@@ -3,7 +3,7 @@
 
   <nav class="bg-sky-800">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-8 md:px-6 sm:px-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
       <div class="flex justify-between h-16">
         <div class="flex">
           <!-- Logo -->
@@ -13,14 +13,14 @@
             </Link>
           </div>
           <!-- Navigation Links -->
-          <div class="sm:hidden space-x-8 ms-10 flex">
+          <div class="hidden space-x-8 ms-10 sm:flex">
             <NavLink v-for="(routeName, label) in nav" :key="routeName" :route-name="routeName" :label="label" />
           </div>
         </div>
 
         <div v-click-outside="closeDropdown" class="flex items-center ms-6">
           <!-- Settings Dropdown -->
-          <div v-if="user" class="relative sm:hidden">
+          <div v-if="user" class="relative hidden sm:block">
             <div @click="open = !open">
               <button class="inline-flex items-center px-3 pt-1 border-b-4 border-transparent text-base leading-4 font-medium text-sky-200 hover:text-sky-50 focus:outline-none transition ease-in-out duration-150">
                 <div>{{ user.name }}</div>
@@ -51,7 +51,7 @@
           </div>
 
           <!-- Hamburger -->
-          <div class="-me-2 hidden items-center sm:flex">
+          <div class="-me-2 sm:hidden items-center flex">
             <button class="inline-flex items-center cursor-pointer justify-center p-2 rounded-md text-sky-100 hover:text-sky-800 hover:bg-sky-100 focus:outline-none focus:bg-sky-100 focus:text-sky-800 transition duration-150 ease-in-out" @click="open = !open">
               <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path v-show="!open" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -64,7 +64,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div v-show="open" class="hidden sm:block">
+    <div v-show="open" class="sm:hidden block">
       <div class="pt-2 pb-3 space-y-1">
         <ResponsiveNavLink v-for="(routeName, label) in nav" :key="routeName" :route-name="routeName" :label="label" />
       </div>
@@ -86,7 +86,7 @@
 
   <!-- Page Heading -->
   <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto py-6 px-8 md:px-6 sm:px-4">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 md:px-8">
       <h1 class="font-semibold text-xl text-gray-800 leading-tight">
         {{ page.props.pageTitle }}
       </h1>
@@ -96,7 +96,7 @@
   <!-- Page Content -->
   <main>
     <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-0 md:px-6 px-8">
+      <div class="max-w-7xl mx-auto px-0 sm:px-6 md:px-8">
         <slot />
       </div>
     </div>

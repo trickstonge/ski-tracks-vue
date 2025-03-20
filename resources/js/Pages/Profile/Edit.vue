@@ -1,7 +1,7 @@
 <template>
   <Head :title="pageTitle" />
 
-  <div class="p-8 mb-8 sm:p-4 bg-white shadow-sm rounded-lg sm:rounded-none">
+  <div class="sm:p-8 mb-8 p-4 bg-white shadow-sm sm:rounded-lg rounded-none">
     <div class="max-w-xl">
       <section>
         <header>
@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  <div class="p-8 mb-8 sm:p-4 bg-white shadow-sm rounded-lg sm:rounded-none">
+  <div class="sm:p-8 mb-8 p-4 bg-white shadow-sm sm:rounded-lg rounded-none">
     <div class="max-w-xl">
       <section>
         <header>
@@ -99,7 +99,7 @@
     </div>
   </div>
 
-  <div class="p-8 sm:p-4 bg-white shadow-sm rounded-lg sm:rounded-none">
+  <div class="sm:p-8 p-4 bg-white shadow-sm sm:rounded-lg rounded-none">
     <div class="max-w-xl">
       <section class="space-y-6">
         <header>

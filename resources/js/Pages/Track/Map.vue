@@ -2,13 +2,13 @@
   <Head :title="pageTitle" />
 
   <Card>
-    <form class="flex mb-8 gap-5 md:block" @submit.prevent="form.post(route('track.map'))">
-      <div class="grow md:mt-4">
+    <form class="sm:flex mb-8 gap-5 block" @submit.prevent="form.post(route('track.map'))">
+      <div class="grow sm:mt-0 mt-4">
         <InputLabel for="activity" value="Activity" />
         <Select v-model="form.activity" name="activity" :options="activities" all />
       </div>
 
-      <div class="grow md:mt-4">
+      <div class="grow sm:mt-0 mt-4">
         <InputLabel for="season" value="Season" />
         <Select v-model="form.season" name="season" :options="seasons" all />
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center">
     <ActivityIcon :icon="icon" />
-    <span class="font-bold text-lg text-center">{{ Math.round(total).toLocaleString() }} {{ desc }}</span>
+    <span class="font-semibold text-lg text-center">{{ Math.round(total).toLocaleString() }} {{ desc }}</span>
   </div>
 </template>
 
