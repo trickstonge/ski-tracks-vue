@@ -7,27 +7,27 @@
         "dev": "vite"
     },
     "devDependencies": {
-        "@tailwindcss/forms": "^0.5.2",
-        "@tailwindcss/postcss": "^4.0.11",
-        "@vitejs/plugin-vue": "^5.2.1",
-        "concurrently": "^9.0.1",
-        "eslint": "^9.21.0",
-        "eslint-plugin-vue": "^10.0.0",
-        "laravel-vite-plugin": "^1.0",
-        "postcss": "^8.4.31",
-        "tailwindcss": "^4.0.11",
-        "vite": "^6.0"
+        "@tailwindcss/forms": "^0.5.11",
+        "@tailwindcss/postcss": "^4.3.5",
+        "@vitejs/plugin-vue": "^6.0.11",
+        "concurrently": "^10.0.7",
+        "eslint": "^10.14.0",
+        "eslint-plugin-vue": "^10.12.1",
+        "laravel-vite-plugin": "^3.2",
+        "postcss": "^8.5.32",
+        "tailwindcss": "^4.3.5",
+        "vite": "^8.3"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "^6.7.2",
-        "@fortawesome/free-regular-svg-icons": "^6.7.2",
-        "@fortawesome/free-solid-svg-icons": "^6.7.2",
-        "@fortawesome/vue-fontawesome": "^3.0.8",
-        "@inertiajs/vue3": "^2.0.4",
-        "chart.js": "^4.4.8",
-        "skiz-parser": "^5.0.1",
-        "vue-chartjs": "^5.3.2",
+        "@fortawesome/fontawesome-svg-core": "^7.3.1",
+        "@fortawesome/free-regular-svg-icons": "^7.3.1",
+        "@fortawesome/free-solid-svg-icons": "^7.3.1",
+        "@fortawesome/vue-fontawesome": "^3.3.3",
+        "@inertiajs/vue3": "^3.11.0",
+        "chart.js": "^4.6.1",
+        "skiz-parser": "^7.0.14",
+        "vue-chartjs": "^5.3.4",
         "vue-toastification": "^2.0.0-rc.5",
-        "vue3-google-map": "^0.21.1"
+        "vue3-google-map": "^0.27.2"
     }
 }
